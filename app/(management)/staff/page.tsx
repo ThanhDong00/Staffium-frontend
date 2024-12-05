@@ -1,12 +1,15 @@
 import React from "react";
-import SideBar from "@/components/management/Sidebar";
-import Header from "@/components/management/Header";
 import Layout from "@/components/Layout";
+import MultiFilter from "@/components/management/MultiFilter";
+import StaffTable from "@/components/management/Staff/StaffTable";
 
 const Staff = () => {
   return (
     <Layout>
-      <div>Staff</div>
+      <div className="p-5 flex flex-col gap-4">
+        <MultiFilter />
+        <StaffTable />
+      </div>
     </Layout>
   );
 };
