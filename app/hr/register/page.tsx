@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import sideBackground from "../../../public/dreamlike-surrealistic-landscape 1.png";
 import Link from "next/link";
@@ -16,10 +16,24 @@ const Register = () => {
     rePassword: "",
   });
 
+  const [workspaceData, setWorkspaceData] = useState({
+    organizationName: "",
+    size: "",
+  });
+
+  useEffect(() => {
+    const tempdata = localStorage.getItem("workspaceData");
+    if (tempdata) {
+      setWorkspaceData(JSON.parse(tempdata));
+    }
+    localStorage.removeItem("workspaceData");
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     console.log("fromData", formData);
+    console.log("workspaceData", workspaceData);
   };
 
   return (
@@ -55,6 +69,7 @@ const Register = () => {
                   setFormData({ ...formData, email: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -69,6 +84,7 @@ const Register = () => {
                   setFormData({ ...formData, password: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -83,6 +99,7 @@ const Register = () => {
                   setFormData({ ...formData, rePassword: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -107,8 +124,9 @@ const Register = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

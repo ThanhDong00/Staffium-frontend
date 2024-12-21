@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import logo from "@/public/logo.png";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +41,12 @@ const Login = () => {
                 id="email"
                 type="email"
                 placeholder="staffium@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginData.email}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -51,9 +56,12 @@ const Login = () => {
                 id="password"
                 type="password"
                 placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginData.password}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -64,7 +72,7 @@ const Login = () => {
 
           <div className="mt-6 text-center text-sm">
             <p className="text-muted-foreground">
-              Don't remember your password?{" "}
+              Do not remember your password?{" "}
               <Link
                 href="/resetpassword"
                 className="text-primary hover:underline"
@@ -76,8 +84,11 @@ const Login = () => {
 
           <div className="mt-4 text-center text-sm">
             <p className="text-muted-foreground">
-              Don't have an account?{" "}
-              <Link href="/register" className="text-primary hover:underline">
+              Do not have an account?{" "}
+              <Link
+                href="/hr/register"
+                className="text-primary hover:underline"
+              >
                 Create one
               </Link>
             </p>
@@ -90,8 +101,9 @@ const Login = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

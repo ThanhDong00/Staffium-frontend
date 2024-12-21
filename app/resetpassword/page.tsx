@@ -85,8 +85,9 @@ const ResetPassword = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

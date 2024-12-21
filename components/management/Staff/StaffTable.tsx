@@ -83,7 +83,7 @@ const staff = [
   },
 ];
 
-const StaffTable = () => {
+const StaffTable = ({ onRowClick }: { onRowClick: any }) => {
   return (
     <div className="bg-white rounded-lg shadow px-6 py-3 flex flex-col justify-between">
       <Table>
@@ -98,7 +98,10 @@ const StaffTable = () => {
         </TableHeader>
         <TableBody>
           {staff.map((person) => (
-            <TableRow key={person.id + person.name}>
+            <TableRow
+              key={person.id + person.name}
+              onClick={() => onRowClick(person.id + person.name)}
+            >
               <TableCell>{person.id}</TableCell>
               <TableCell>{person.name}</TableCell>
               <TableCell>

@@ -1,6 +1,8 @@
 import React from "react";
 import SideBar from "@/components/management/Sidebar";
+import AppSidebar from "./AppSidebar/AppSidebar";
 import Header from "@/components/management/Header";
+import { SidebarProvider } from "./ui/sidebar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,15 +10,17 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex">
-      <SideBar />
-      <div className="flex-1 flex-col">
-        <Header />
-        <main className="flex-1 min-h-[90%] bg-slate-100 rounded-md">
-          {children}
-        </main>
+    <SidebarProvider>
+      <div className="min-h-screen flex flex-1">
+        <AppSidebar />
+        <div className="flex flex-col flex-1">
+          <Header />
+          <main className="min-h-[90%] bg-slate-100 rounded-md flex-1">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 

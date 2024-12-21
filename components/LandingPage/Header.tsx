@@ -44,7 +44,7 @@ const Header = () => {
             <Link href={"/login"}>Log in</Link>
           </Button>
           <Button className="bg-primary">
-            <Link href={"/signup"}>Get started</Link>
+            <Link href={"/whoareyou"}>Get started</Link>
           </Button>
         </div>
       </div>

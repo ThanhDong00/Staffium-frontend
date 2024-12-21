@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -9,7 +11,27 @@ import {
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+// interface Filters {
+//   search: string;
+//   sortBy: string;
+//   department: string;
+//   gender: string;
+// }
+
 const MultiFilter = () => {
+  const [filters, setFilters] = useState({
+    search: "",
+    sortBy: "name",
+    department: "",
+    gender: "",
+  });
+
+  const handleFilterChange = (key: string, value: string) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    console.log("filters", newFilters);
+  };
+
   return (
     <div className="bg-white px-6 py-3 rounded-lg shadow">
       <div className="flex items-center gap-4 flex-1 justify-between">
@@ -19,12 +41,16 @@ const MultiFilter = () => {
             className="pl-9 w-[300px]"
             placeholder="Search..."
             type="search"
+            onChange={(e) => handleFilterChange("search", e.target.value)}
           />
         </div>
 
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-500">Sort by:</span>
-          <Select defaultValue="name">
+          <Select
+            defaultValue={filters.sortBy}
+            onValueChange={(value) => handleFilterChange("sortBy", value)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
@@ -35,7 +61,10 @@ const MultiFilter = () => {
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select
+            defaultValue={filters.department}
+            onValueChange={(value) => handleFilterChange("department", value)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Department" />
             </SelectTrigger>
@@ -47,7 +76,10 @@ const MultiFilter = () => {
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select
+            defaultValue={filters.gender}
+            onValueChange={(value) => handleFilterChange("gender", value)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Gender" />
             </SelectTrigger>

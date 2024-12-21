@@ -9,8 +9,11 @@ import { Button } from "@/components/ui/button";
 
 import logo from "@/public/logo.png";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const JoinOrganization = () => {
+  const router = useRouter();
+
   const [invatationCode, setInvatationCode] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -55,9 +58,16 @@ const JoinOrganization = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm">
+          <Button
+            onClick={() => router.push("/hr/createworkspace")}
+            className="bg-secondary hover:bg-secondary-foreground text-primary w-full mt-6"
+          >
+            Create a new one
+          </Button>
+
+          {/* <div className="mt-6 text-center text-sm">
             <p className="text-muted-foreground">
-              Your organization doesn't have one yet?{" "}
+              Your organization does not have one yet?{" "}
               <Link
                 href="/hr/createworkspace"
                 className="text-primary hover:underline"
@@ -65,7 +75,7 @@ const JoinOrganization = () => {
                 Create a new one
               </Link>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -74,8 +84,9 @@ const JoinOrganization = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

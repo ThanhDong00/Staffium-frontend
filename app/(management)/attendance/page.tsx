@@ -5,6 +5,7 @@ import MultiFilter from "@/components/management/MultiFilter";
 import { CalendarX2, LogOut, Timer, CheckCheck, ScanFace } from "lucide-react";
 import AttendanceTable from "@/components/management/Attendance/AttendanceTable";
 import SelectedFilter from "@/components/management/SelectedFilter";
+import NumberWidget from "@/components/management/NumberWidget";
 
 const filter = ["All", "Check in", "Check out", "Late", "Off", "OT"];
 
@@ -26,37 +27,13 @@ const Attendance = () => {
         </div>
 
         <div className="grid grid-cols-6 gap-4 mt-5 bg-white rounded-lg px-6 py-3 shadow">
-          <div className="bg-white p-4 rounded-lg border">
-            <div className=" flex items-center justify-between">
-              <p className="text-center font-semibold">Check-in</p>
-              <CheckCheck />
-            </div>
-            <p className="text-start text-3xl font-semibold">123</p>
-          </div>
+          <NumberWidget title="Check-in" Icon={CheckCheck} value="123" />
 
-          <div className="bg-white p-4 rounded-lg border">
-            <div className=" flex items-center justify-between">
-              <p className="text-center font-semibold">Check-out</p>
-              <LogOut />
-            </div>
-            <p className="text-start text-3xl font-semibold">123</p>
-          </div>
+          <NumberWidget title="Check-out" Icon={LogOut} value="123" />
 
-          <div className="bg-white p-4 rounded-lg border">
-            <div className=" flex items-center justify-between">
-              <p className="text-center font-semibold">Late</p>
-              <Timer />
-            </div>
-            <p className="text-start text-3xl font-semibold">123</p>
-          </div>
+          <NumberWidget title="Late" Icon={Timer} value="123" />
 
-          <div className="bg-white p-4 rounded-lg border">
-            <div className=" flex items-center justify-between">
-              <p className="text-center font-semibold">Off</p>
-              <CalendarX2 />
-            </div>
-            <p className="text-start text-3xl font-semibold">123</p>
-          </div>
+          <NumberWidget title="Off" Icon={CalendarX2} value="123" />
         </div>
 
         <div className="mt-5">

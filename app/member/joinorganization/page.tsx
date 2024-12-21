@@ -9,13 +9,20 @@ import { Button } from "@/components/ui/button";
 
 import logo from "@/public/logo.png";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const JoinOrganization = () => {
+  const router = useRouter();
+
   const [invatationCode, setInvatationCode] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(invatationCode);
+    // Call API to join organization
+
+    // Redirect to register page
+    // router.push("/member/register");
   };
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
@@ -62,8 +69,9 @@ const JoinOrganization = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

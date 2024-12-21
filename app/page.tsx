@@ -3,7 +3,6 @@ import Footer from "@/components/LandingPage/Footer";
 import icon3d from "../public/3dicons 1.png";
 import logo from "../public/logo.png";
 import Image from "next/image";
-import Link from "next/link";
 import { IoDiamondOutline } from "react-icons/io5";
 
 export default function LandingPage() {
@@ -49,7 +48,7 @@ export default function LandingPage() {
             <p className="text-lg text-white font-semibold">Feature 1</p>
             <p className="text-lg text-wrap text-white pl-6">
               Be life confident Wall Street you can bank on portfolio <br />
-              upside downside yield to broker makin' chedda sure thing.
+              upside downside yield to broker makin chedda sure thing.
             </p>
           </div>
           <div className="rounded-md bg-indigo-400 w-fit px-4 py-3 flex gap-2 items-center ml-auto">
@@ -57,7 +56,7 @@ export default function LandingPage() {
             <p className="text-lg text-white font-semibold">Feature 2</p>
             <p className="text-lg text-wrap text-white pl-6">
               Be life confident Wall Street you can bank on portfolio <br />
-              upside downside yield to broker makin' chedda sure thing.
+              upside downside yield to broker makin chedda sure thing.
             </p>
           </div>
           <div className="rounded-md bg-indigo-400 w-fit px-4 py-3 flex gap-2 items-center">
@@ -65,7 +64,7 @@ export default function LandingPage() {
             <p className="text-lg text-white font-semibold">Feature 3</p>
             <p className="text-lg text-wrap text-white pl-6">
               Be life confident Wall Street you can bank on portfolio <br />
-              upside downside yield to broker makin' chedda sure thing.
+              upside downside yield to broker makin chedda sure thing.
             </p>
           </div>
           <div className="rounded-md bg-indigo-400 w-fit px-4 py-3 flex gap-2 items-center ml-auto">
@@ -73,7 +72,7 @@ export default function LandingPage() {
             <p className="text-lg text-white font-semibold">Feature 4</p>
             <p className="text-lg text-wrap text-white pl-6">
               Be life confident Wall Street you can bank on portfolio <br />
-              upside downside yield to broker makin' chedda sure thing.
+              upside downside yield to broker makin chedda sure thing.
             </p>
           </div>
         </div>
@@ -130,25 +129,25 @@ export default function LandingPage() {
         <div className="flex flex-col gap-2">
           <div className="rounded-md bg-slate-100 w-fit px-4 py-3">
             <p className=" text-lg ">
-              "This platform has transformed the way we manage our team! Super
-              user-friendly and efficient."
+              This platform has transformed the way we manage our team! Super
+              user-friendly and efficient.
             </p>
             <p className=" text-lg text-right text-gray-600 mt-2">John Doe</p>
           </div>
           <div className="rounded-md bg-slate-100 w-fit px-4 py-3 ml-auto">
             <p className=" text-lg ">
-              "Absolutely love the seamless interface and how easy it is to
-              track our staff's progress."
+              Absolutely love the seamless interface and how easy it is to track
+              our staff&apos;s progress.
             </p>
             <p className=" text-lg text-right text-gray-600 mt-2">Jane Doe</p>
           </div>
           <div className="rounded-md bg-slate-100 w-fit px-4 py-3">
             <p className=" text-lg ">
-              "The perfect solution for our HR needs—intuitive, reliable, and
-              packed with useful features!"
+              The perfect solution for our HR needs—intuitive, reliable, and
+              packed with useful features!
             </p>
             <p className=" text-lg text-right text-gray-600 mt-2">
-              who’s know?
+              who is know?
             </p>
           </div>
         </div>

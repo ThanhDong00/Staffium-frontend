@@ -55,6 +55,7 @@ const Register = () => {
                   setFormData({ ...formData, email: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -69,6 +70,7 @@ const Register = () => {
                   setFormData({ ...formData, password: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -83,6 +85,7 @@ const Register = () => {
                   setFormData({ ...formData, rePassword: e.target.value })
                 }
                 required
+                autoComplete="off"
               />
             </div>
 
@@ -107,8 +110,9 @@ const Register = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

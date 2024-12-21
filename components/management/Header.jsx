@@ -1,14 +1,29 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import logo from "../../public/logo.png";
 import { LuBell, LuSettings } from "react-icons/lu";
+import { formatDateTime } from "../../utils/formatDateTime";
 
 const Header = () => {
+  const [currentDateTime, setCurrentDateTime] = useState(
+    formatDateTime(new Date())
+  );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDateTime(formatDateTime(new Date()));
+    }, 1000); // Update every second
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
   return (
     <header className="p-4 flex items-center justify-end my-auto">
       <span className="text-sm text-muted-foreground font-semibold px-4">
-        08:01 AM, 23-09-2024
+        {currentDateTime}
       </span>
 
       <div className="flex items-center gap-4 border-l-2 border-slate-300 pl-4">

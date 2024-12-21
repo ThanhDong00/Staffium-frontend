@@ -9,8 +9,11 @@ import { Button } from "@/components/ui/button";
 
 import logo from "@/public/logo.png";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const CreateWorkspace = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     organizationName: "",
     size: "",
@@ -18,7 +21,10 @@ const CreateWorkspace = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    // Store workspace data
+    localStorage.setItem("workspaceData", JSON.stringify(formData));
+    // Navigate to register
+    router.push("/hr/register");
   };
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
@@ -80,8 +86,9 @@ const CreateWorkspace = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>

@@ -9,13 +9,33 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import logo from "@/public/logo.png";
+import { useRouter } from "next/navigation";
 
 const WhoAreYou = () => {
+  const router = useRouter();
+
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleRadioChange = (value: string) => {
+    setSelectedValue(value);
+    setError(null);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(selectedValue);
+    if (selectedValue === "hr") {
+      // Navigate to HR signup
+      router.push("/hr/joinorganization");
+      // console.log("HR");
+    } else if (selectedValue === "staff") {
+      // Navigate to Staff signup
+      router.push("/member/joinorganization");
+      // console.log("Staff");
+    } else {
+      setError("Please select an option");
+      // console.log("Please select an option");
+    }
   };
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
@@ -37,7 +57,7 @@ const WhoAreYou = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <RadioGroup onValueChange={setSelectedValue}>
+              <RadioGroup onValueChange={handleRadioChange}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="hr" id="hr" />
                   <Label htmlFor="hr">HR</Label>
@@ -48,6 +68,9 @@ const WhoAreYou = () => {
                 </div>
               </RadioGroup>
             </div>
+
+            {error && <p className="text-red-500">{error}</p>}
+
             <Button type="submit" className="w-full">
               Next step
             </Button>
@@ -60,8 +83,9 @@ const WhoAreYou = () => {
         <Image
           src={sideBackground}
           alt="Logo"
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 0vw, 50vw"
+          className="object-cover"
         />
       </div>
     </div>
