@@ -28,7 +28,7 @@ const Footer = () => {
           </div>
 
           <div className="text-sm text-gray-600">
-            © Copyright Khái & Đông 2024
+            © Copyright Khải & Đông 2024
           </div>
         </div>
       </div>
