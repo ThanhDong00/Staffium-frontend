@@ -104,7 +104,7 @@ const AppSidebar = () => {
   });
 
   return (
-    <Sidebar>
+    <Sidebar className="border-none">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
           <Image className="" src={logo} alt="Logo" width={32} height={32} />

@@ -38,7 +38,7 @@ const NavMain = ({
             key={item.title}
             asChild
             defaultOpen={item.isActive}
-            className="group/collapsible py-2"
+            className="group/collapsible py-1"
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
@@ -46,8 +46,8 @@ const NavMain = ({
                   tooltip={item.title}
                   className={
                     item.isActive
-                      ? "bg-primary text-white font-medium data-[state=open]:hover:bg-primary data-[state=open]:hover:text-white"
-                      : ""
+                      ? "bg-primary text-white font-medium data-[state=open]:hover:bg-primary data-[state=open]:hover:text-white h-10"
+                      : "h-10"
                   }
                 >
                   {item.icon && <item.icon />}
@@ -75,11 +75,11 @@ const NavMain = ({
             </SidebarMenuItem>
           </Collapsible>
         ) : (
-          <SidebarMenuItem key={item.title} className="py-2">
+          <SidebarMenuItem key={item.title} className="py-1">
             <SidebarMenuButton
               asChild
               isActive={item.isActive}
-              className="data-[active=true]:bg-primary data-[active=true]:text-white"
+              className="data-[active=true]:bg-primary data-[active=true]:text-white h-10"
             >
               <a href={item.url}>
                 {item.icon && <item.icon />}
