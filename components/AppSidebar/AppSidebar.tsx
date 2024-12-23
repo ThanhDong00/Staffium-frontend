@@ -22,7 +22,7 @@ import {
 } from "react-icons/lu";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../public/logo.png";
+import logo from "../../public/Logo-full.png";
 import NavMain from "./NavMain";
 import { usePathname } from "next/navigation";
 
@@ -107,9 +107,8 @@ const AppSidebar = () => {
     <Sidebar className="border-none">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
-          <Image className="" src={logo} alt="Logo" width={32} height={32} />
           <Link href="/dashboard" className="text-xl font-semibold">
-            Staffium
+            <Image className="" src={logo} alt="Logo" height={32} />
           </Link>
         </div>
       </SidebarHeader>

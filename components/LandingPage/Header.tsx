@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import logo from "../../public/logo.png";
+import logo from "../../public/Logo-full.png";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,9 +10,9 @@ const Header = () => {
       <div className="py-4 px-4 flex justify-between container mx-auto items-center">
         {/* Logo */}
         <div className="flex gap-2 items-center">
-          <Image className="" src={logo} alt="Logo" width={32} height={32} />
+
           <Link href="/" className="text-xl font-semibold">
-            Staffium
+            <Image className="" src={logo} alt="Logo" height={32} />
           </Link>
         </div>
 

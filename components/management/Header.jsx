@@ -21,7 +21,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="p-4 flex items-center justify-end my-auto">
+    <header className="py-4 px-8 flex items-center justify-end my-auto">
       <span className="text-sm text-muted-foreground font-semibold px-4">
         {currentDateTime}
       </span>
