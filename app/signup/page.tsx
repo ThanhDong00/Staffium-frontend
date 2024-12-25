@@ -17,14 +17,14 @@ import { Progress } from "@/components/ui/progress";
 import { useGlobalContext } from "../provider";
 
 const Register = () => {
-  const { progress, triggerProgress } = useGlobalContext()
+  const { progress, triggerProgress } = useGlobalContext();
 
-  const searchParams = useSearchParams()
-  const role = searchParams.get('role')
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role");
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -32,58 +32,61 @@ const Register = () => {
     rePassword: "",
   });
 
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
 
-  const [showPassword, setShowPassword] = useState<HTMLInputTypeAttribute>('password')
-  const [showRePassword, setShowRePassword] = useState<HTMLInputTypeAttribute>('password')
+  const [showPassword, setShowPassword] =
+    useState<HTMLInputTypeAttribute>("password");
+  const [showRePassword, setShowRePassword] =
+    useState<HTMLInputTypeAttribute>("password");
 
   const signUpMutation = useMutation({
     mutationFn: (form: SignUpForm) => AuthService.signUp(form),
     onSuccess: (res) => {
       if (res.status === 200) {
         toast({
-          variant: 'default',
+          variant: "default",
           title: "Sign up successful!",
           description: "Please make you first login.",
-        })
-        router.push('/login')
-      }
-      else {
+        });
+        router.push("/login");
+      } else {
         toast({
-          variant: 'destructive',
+          variant: "destructive",
           title: "Fail to sign up!",
           description: `${res.message.message}`,
-        })
+        });
       }
-
     },
     onError: () => {
       toast({
-        variant: 'destructive',
+        variant: "destructive",
         title: "Fail to sign up!",
         description: "Please try again.",
-      })
-    }
-  })
+      });
+    },
+  });
 
   const verifyForm = () => {
-    return formData.password === formData.rePassword
-  }
+    return formData.password === formData.rePassword;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (verifyForm()) {
-      triggerProgress()
+      triggerProgress();
       signUpMutation.mutate({
         username: formData.email,
         password: formData.password,
-        roles: [role]
-      } as SignUpForm)
-    }
-    else {
+        roles: [role],
+      } as SignUpForm);
+    } else {
       setError("Passwords are not the same!");
     }
+  };
+
+  const checkPassword = () => {
+    return formData.password === formData.rePassword;
   };
 
   return (
@@ -97,9 +100,9 @@ const Register = () => {
         </div>
       </div>
       {/* Form Section */}
-      {signUpMutation.isPending ?
+      {signUpMutation.isPending ? (
         <Progress value={progress} className="w-full" />
-        :
+      ) : (
         <div className="flex flex-col items-start justify-center px-4 sm:px-8 lg:px-12 xl:px-32 ">
           <div className="w-full max-w-md mx-auto">
             <h1 className="text-4xl font-semibold text-center">
@@ -138,17 +141,19 @@ const Register = () => {
                     required
                   />
                   <Button
-                    type='button'
-                    variant='outline'
-                    onClick={() => setShowPassword(prev => {
-                      if (prev === 'password')
-                        return 'text'
-                      else
-                        return 'password'
-                    })}>Show</Button>
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      setShowPassword((prev) => {
+                        if (prev === "password") return "text";
+                        else return "password";
+                      })
+                    }
+                  >
+                    Show
+                  </Button>
                 </div>
               </div>
-
 
               <div className="space-y-2">
                 <Label htmlFor="re-password">Re-enter Password</Label>
@@ -164,14 +169,17 @@ const Register = () => {
                     required
                   />
                   <Button
-                    type='button'
-                    variant='outline'
-                    onClick={() => setShowRePassword(prev => {
-                      if (prev === 'password')
-                        return 'text'
-                      else
-                        return 'password'
-                    })}>Show</Button>
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      setShowRePassword((prev) => {
+                        if (prev === "password") return "text";
+                        else return "password";
+                      })
+                    }
+                  >
+                    Show
+                  </Button>
                 </div>
               </div>
               {error && <p className="text-red-500">{error}</p>}
@@ -190,7 +198,7 @@ const Register = () => {
             </div>
           </div>
         </div>
-      }
+      )}
 
       {/* Decorative Image Section */}
       <div className="hidden md:block relative bg-primary">

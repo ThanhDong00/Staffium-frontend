@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import { CheckCheck, FileQuestion, LogOut, Timer } from "lucide-react";
@@ -6,9 +8,15 @@ import SelectedFilter from "@/components/management/SelectedFilter";
 import { RequestsTable } from "@/components/management/Requests/RequestTable";
 import NumberWidget from "@/components/management/NumberWidget";
 
-const filter = ["All", "Pending", "Approved", "Rejected"];
+const filter = ["Pending", "Approved", "Rejected"];
 
 const Requests = () => {
+  const [selected, setSelected] = useState("Pending");
+
+  const handleSelectFilterClick = (label: string) => {
+    setSelected(label);
+  };
+
   return (
     <Layout>
       <div className="p-5">
@@ -19,7 +27,10 @@ const Requests = () => {
           </div>
           <p className=" italic">
             See requests of all time at{" "}
-            <Link href="/statistics" className="text-blue-500 underline">
+            <Link
+              href="/statistics/requests"
+              className="text-blue-500 underline"
+            >
               Statistics
             </Link>
           </p>
@@ -34,11 +45,15 @@ const Requests = () => {
         </div>
 
         <div className="mt-5">
-          <SelectedFilter datas={filter} />
+          <SelectedFilter
+            datas={filter}
+            valueSelected={selected}
+            handleClick={handleSelectFilterClick}
+          />
         </div>
 
         <div className="mt-5">
-          <RequestsTable />
+          <RequestsTable typeRequest={selected} />
         </div>
       </div>
     </Layout>

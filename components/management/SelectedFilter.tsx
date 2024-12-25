@@ -3,12 +3,18 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
-const SelectedFilter = ({ datas }: { datas: Array<string> }) => {
-  const [selected, setSelected] = useState("All");
-
-  const handleClick = (label: string) => {
-    setSelected(label);
-  };
+const SelectedFilter = ({
+  datas,
+  valueSelected,
+  handleClick,
+}: {
+  datas: Array<string>;
+  valueSelected: string;
+  handleClick: (label: string) => void;
+}) => {
+  // const handleClick = (label: string) => {
+  //   setSelected(label);
+  // };
 
   return (
     <div className="px-5 py-3 rounded-full bg-white shadow w-fit mx-auto">
@@ -16,7 +22,7 @@ const SelectedFilter = ({ datas }: { datas: Array<string> }) => {
         {datas.map((label) => (
           <Button
             key={label}
-            variant={selected === label ? "default" : "ghost"}
+            variant={valueSelected === label ? "default" : "ghost"}
             className="rounded-full"
             onClick={() => handleClick(label)}
           >

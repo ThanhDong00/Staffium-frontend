@@ -49,10 +49,12 @@ const requests = [
   },
 ];
 
-export function RequestsTable() {
+export function RequestsTable({ typeRequest }: { typeRequest: string }) {
   return (
     <div className="bg-white rounded-lg shadow px-6 py-3 flex flex-col justify-between">
-      <p className=" text-center text-2xl font-bold py-3">Waiting list</p>
+      <p className=" text-center text-2xl font-bold py-3">
+        {typeRequest} Waiting list
+      </p>
       <Table>
         <TableHeader>
           <TableRow>
