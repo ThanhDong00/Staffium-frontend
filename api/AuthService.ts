@@ -32,7 +32,7 @@ export const AuthService = {
 
   },
 
-  logout: async (): Promise<boolean | undefined> => {
+  logout: async (): Promise<any> => {
     return await axios.post(`${AUTH_URL}/logout`,
       {
         headers: {
@@ -46,14 +46,13 @@ export const AuthService = {
       .catch(error => error.response.data)
   },
 
-  check: async (): Promise<boolean | undefined> => {
+  check: async (): Promise<any> => {
     return await axios.get(`${AUTH_URL}/check`,
       {
         headers: {
           Authorization: `Bearer ${LoginSession.get()}`,
         }
       })
-
       .then((res) => res.data)
       .catch(error => error.response.data)
   },
