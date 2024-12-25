@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import GlobalProvider from './provider'
+import { Toaster } from "@/components/ui/toaster";
+import React from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,6 +21,8 @@ export const metadata: Metadata = {
   description: "Staffium",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +33,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <GlobalProvider>
+          {children}
+          <Toaster />
+        </GlobalProvider>
       </body>
     </html>
   );

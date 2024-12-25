@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import logo from "@/public/logo.png";
 import { useRouter } from "next/navigation";
+import { USER_ROLES } from "@/constants/enum";
 
 const WhoAreYou = () => {
   const router = useRouter();
@@ -26,12 +27,10 @@ const WhoAreYou = () => {
     e.preventDefault();
     if (selectedValue === "hr") {
       // Navigate to HR signup
-      router.push("/hr/joinorganization");
-      // console.log("HR");
+      router.push(`/signup?role=${USER_ROLES.HR}`);
     } else if (selectedValue === "staff") {
       // Navigate to Staff signup
-      router.push("/member/joinorganization");
-      // console.log("Staff");
+      router.push(`/signup?role=${USER_ROLES.STAFF}`);
     } else {
       setError("Please select an option");
       // console.log("Please select an option");
@@ -75,6 +74,14 @@ const WhoAreYou = () => {
               Next step
             </Button>
           </form>
+          <div className="mt-4 text-center text-sm">
+            <p className="text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary hover:underline">
+                Login
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
 
