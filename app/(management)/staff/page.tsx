@@ -1,41 +1,117 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import MultiFilter from "@/components/management/MultiFilter";
 import StaffTable from "@/components/management/Staff/StaffTable";
 import { useRouter } from "next/navigation";
+import { StaffService } from "@/api/StaffService";
+import { StaffResponse } from "@/api/constant/response";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+const ITEM_PER_PAGE = 10;
 
 const Staff = () => {
   const router = useRouter();
-  const [allStaffData, setAllStaffData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(1);
+  const [allStaffData, setAllStaffData] = useState<[StaffResponse]>();
 
-  const fetchStaffData = async () => {
-    // Fetch staff data from the server
-    const response = await fetch(
-      "https://staffium-server.onrender.com/api/staff/all"
+  const [filters, setFilters] = useState({
+    search: "",
+    // sortBy: "name",
+    department: "",
+    gender: "",
+  });
+
+  const fetchAllStaffData = async (page: number) => {
+    // Fetch all staff data
+    const data = await StaffService.getAllStaff(
+      page,
+      ITEM_PER_PAGE,
+      1,
+      filters.search,
+      filters.department,
+      filters.gender
     );
-    const data = await response.json();
-    setAllStaffData(data);
+    setAllStaffData(data.data.items);
+    setPageSize(data.data.totalPage);
   };
 
   useEffect(() => {
-    fetchStaffData();
-  }, []);
+    fetchAllStaffData(currentPage);
+  }, [currentPage, filters]);
 
   const handleTableClick = (id: string) => {
     // Handle table row click
-    console.log("Row clicked", id);
     router.push(`staff/${id}`);
   };
 
-  console.log(allStaffData);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
 
   return (
     <Layout>
       <div className="p-5 flex flex-col gap-4">
-        <MultiFilter />
-        <StaffTable onRowClick={handleTableClick} />
+        <MultiFilter filters={filters} onFilterChange={handleFilterChange} />
+
+        <div className="h-[calc(100vh-275px)] overflow-y-auto border bg-white rounded-lg shadow">
+          <StaffTable onRowClick={handleTableClick} dataList={allStaffData} />
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    currentPage > 1 && handlePageChange(currentPage - 1)
+                  }
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
+
+              {[...Array(pageSize)].map((_, index) => (
+                <PaginationItem key={index + 1}>
+                  <PaginationLink
+                    onClick={() => handlePageChange(index + 1)}
+                    isActive={currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    currentPage < pageSize && handlePageChange(currentPage + 1)
+                  }
+                  className={
+                    currentPage === pageSize
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
     </Layout>
   );

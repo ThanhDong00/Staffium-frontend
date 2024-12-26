@@ -10,82 +10,88 @@ import {
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const staff = [
-  {
-    id: "ID0001",
-    name: "Emily Smith",
-    gender: "Female",
-    department: "Human Resources",
-    position: "Recruitment Specialist",
-  },
-  {
-    id: "ID0001",
-    name: "James Williams",
-    gender: "Male",
-    department: "IT",
-    position: "Software Engineer",
-  },
-  {
-    id: "ID0001",
-    name: "Jessica Brown",
-    gender: "Female",
-    department: "Marketing",
-    position: "Campaign Manager",
-  },
-  {
-    id: "ID0001",
-    name: "David Miller",
-    gender: "Male",
-    department: "Accounting",
-    position: "Senior Accountant",
-  },
-  {
-    id: "ID0001",
-    name: "Sarah Davis",
-    gender: "Female",
-    department: "Administrative",
-    position: "Administrative Assistant",
-  },
-  {
-    id: "ID0001",
-    name: "John Wilson",
-    gender: "Male",
-    department: "Engineering",
-    position: "Mechanical Engineer",
-  },
-  {
-    id: "ID0001",
-    name: "Ashley Taylor",
-    gender: "Female",
-    department: "Customer Support",
-    position: "Customer Support Representative",
-  },
-  {
-    id: "ID0001",
-    name: "Christopher Thomas",
-    gender: "Male",
-    department: "Sales",
-    position: "Sales Representative",
-  },
-  {
-    id: "ID0001",
-    name: "Amanda Anderson",
-    gender: "Female",
-    department: "Legal",
-    position: "In-house Counsel",
-  },
-  {
-    id: "ID0001",
-    name: "Robert Moore",
-    gender: "Male",
-    department: "Production",
-    position: "Production Manager",
-  },
-];
+// const staff = [
+//   {
+//     id: "ID0001",
+//     name: "Emily Smith",
+//     gender: "Female",
+//     department: "Human Resources",
+//     position: "Recruitment Specialist",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "James Williams",
+//     gender: "Male",
+//     department: "IT",
+//     position: "Software Engineer",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Jessica Brown",
+//     gender: "Female",
+//     department: "Marketing",
+//     position: "Campaign Manager",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "David Miller",
+//     gender: "Male",
+//     department: "Accounting",
+//     position: "Senior Accountant",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Sarah Davis",
+//     gender: "Female",
+//     department: "Administrative",
+//     position: "Administrative Assistant",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "John Wilson",
+//     gender: "Male",
+//     department: "Engineering",
+//     position: "Mechanical Engineer",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Ashley Taylor",
+//     gender: "Female",
+//     department: "Customer Support",
+//     position: "Customer Support Representative",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Christopher Thomas",
+//     gender: "Male",
+//     department: "Sales",
+//     position: "Sales Representative",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Amanda Anderson",
+//     gender: "Female",
+//     department: "Legal",
+//     position: "In-house Counsel",
+//   },
+//   {
+//     id: "ID0001",
+//     name: "Robert Moore",
+//     gender: "Male",
+//     department: "Production",
+//     position: "Production Manager",
+//   },
+// ];
 
-const StaffTable = ({ onRowClick }: { onRowClick: any }) => {
+const StaffTable = ({
+  onRowClick,
+  dataList,
+}: {
+  onRowClick: (id: string) => void;
+  dataList: any;
+}) => {
   return (
-    <div className="bg-white rounded-lg shadow px-6 py-3 flex flex-col justify-between">
+    <div className=" px-6 py-3 flex flex-col justify-between">
       <Table>
         <TableHeader>
           <TableRow>
@@ -97,17 +103,16 @@ const StaffTable = ({ onRowClick }: { onRowClick: any }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {staff.map((person) => (
-            <TableRow
-              key={person.id + person.name}
-              onClick={() => onRowClick(person.id + person.name)}
-            >
-              <TableCell>{person.id}</TableCell>
-              <TableCell>{person.name}</TableCell>
+          {dataList?.map((person: any) => (
+            <TableRow key={person._id} onClick={() => onRowClick(person._id)}>
+              <TableCell>{person._id}</TableCell>
+              <TableCell>
+                {person.first_name} {person.last_name}
+              </TableCell>
               <TableCell>
                 <span
                   className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                    person.gender === "Female"
+                    person.gender === "female"
                       ? "bg-pink-100 text-pink-700"
                       : "bg-blue-100 text-blue-700"
                   }`}
@@ -115,14 +120,14 @@ const StaffTable = ({ onRowClick }: { onRowClick: any }) => {
                   {person.gender}
                 </span>
               </TableCell>
-              <TableCell>{person.department}</TableCell>
-              <TableCell>{person.position}</TableCell>
+              <TableCell>{person.department?.name}</TableCell>
+              <TableCell>{person.position?.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-center py-4 border-t">
+      {/* <div className="flex items-center justify-center py-4 border-t">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon">
             <ChevronLeft className="w-4 h-4" />
@@ -147,7 +152,7 @@ const StaffTable = ({ onRowClick }: { onRowClick: any }) => {
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

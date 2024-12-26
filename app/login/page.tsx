@@ -19,57 +19,57 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
-  const { progress, triggerProgress } = useGlobalContext()
-  const { toast } = useToast()
-  const router = useRouter()
+  const { progress, triggerProgress } = useGlobalContext();
+  const { toast } = useToast();
+  const router = useRouter();
 
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
-  })
-  const [showPassword, setShowPassword] = useState<HTMLInputTypeAttribute>('password')
+  });
+  const [showPassword, setShowPassword] =
+    useState<HTMLInputTypeAttribute>("password");
 
   const loginMutation = useMutation({
     mutationFn: (form: SignInForm) => {
-      return AuthService.signIn(form)
+      return AuthService.signIn(form);
     },
     onSuccess: (res) => {
       if (res.status === 200) {
         toast({
-          variant: 'default',
+          variant: "default",
           title: "Sign up successful!",
           description: "Please make you first login.",
-        })
-        router.push('/login')
-      }
-      else {
+        });
+        router.push("/login");
+      } else {
         toast({
-          variant: 'destructive',
+          variant: "destructive",
           title: "Fail to sign up!",
           description: `${res.message.message}`,
-        })
+        });
       }
       switch (LoginSession.role()) {
         case USER_ROLES.HR:
-          router.replace('/dashboard')
-          break
+          router.replace("/dashboard");
+          break;
         case USER_ROLES.STAFF:
-          router.replace('/personal')
-          break
+          router.replace("/personal");
+          break;
         default:
-          break
+          break;
       }
     },
-    onError: (error) => console.error(error)
-  })
+    onError: (error) => console.error(error),
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     loginMutation.mutate({
       username: loginData.email,
-      password: loginData.password
-    } as SignInForm)
+      password: loginData.password,
+    } as SignInForm);
   };
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
@@ -82,8 +82,9 @@ const Login = () => {
         </div>
       </div>
       {/* Login Form Section */}
-      {loginMutation.isPending === true && <Progress value={progress} className="w-full" />}
-
+      {loginMutation.isPending === true && (
+        <Progress value={progress} className="w-full" />
+      )}
 
       <div className="flex flex-col items-start justify-center px-4 sm:px-8 lg:px-12 xl:px-32 ">
         <div className="w-full max-w-md mx-auto">
@@ -119,14 +120,17 @@ const Login = () => {
                   autoComplete="off"
                 />
                 <Button
-                  type='button'
-                  variant='outline'
-                  onClick={() => setShowPassword(prev => {
-                    if (prev === 'password')
-                      return 'text'
-                    else
-                      return 'password'
-                  })}>Show</Button>
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    setShowPassword((prev) => {
+                      if (prev === "password") return "text";
+                      else return "password";
+                    })
+                  }
+                >
+                  Show
+                </Button>
               </div>
             </div>
 
@@ -150,19 +154,16 @@ const Login = () => {
           <div className="mt-4 text-center text-sm">
             <p className="text-muted-foreground">
               Do not have an account?{" "}
-              <Link
-                href="/whoareyou"
-                className="text-primary hover:underline"
-              >
+              <Link href="/whoareyou" className="text-primary hover:underline">
                 Create one
               </Link>
             </p>
           </div>
         </div>
-      </div >
+      </div>
 
       {/* Decorative Image Section */}
-      < div className="hidden md:block relative bg-primary" >
+      <div className="hidden md:block relative bg-primary">
         <Image
           src={sideBackground}
           alt="Logo"
@@ -170,8 +171,8 @@ const Login = () => {
           sizes="(max-width: 768px) 0vw, 50vw"
           className="object-cover"
         />
-      </ div>
-    </div >
+      </div>
+    </div>
   );
 };
 

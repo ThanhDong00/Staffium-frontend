@@ -1,5 +1,7 @@
 "use client";
 
+import { StaffResponse } from "@/api/constant/response";
+import { StaffService } from "@/api/StaffService";
 import Layout from "@/components/Layout";
 import StaffDetailsAttendance from "@/components/management/Staff/StaffDetailsAttendance";
 import StaffDetailsGeneral from "@/components/management/Staff/StaffDetailsGeneral";
@@ -14,16 +16,27 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
   const staffId = params.staffId;
   const router = useRouter();
 
-  const [staffDetails, setStaffDetails] = useState({
-    id: "",
-    name: "Khải Khải",
-    phone: "0123456789",
-    email: "sampleEmail@gmail.com",
-    avatar: "https://picsum.photos/200",
-  });
+  // const [staffDetails, setStaffDetails] = useState({
+  //   id: "",
+  //   name: "Khải Khải",
+  //   phone: "0123456789",
+  //   email: "sampleEmail@gmail.com",
+  //   avatar: "https://picsum.photos/200",
+  // });
+  const [staffDetails, setStaffDetails] = useState<StaffResponse>();
+
+  const fetchStaffDetails = async () => {
+    // Fetch staff details data
+    const data = await StaffService.getStaffById(staffId);
+    setStaffDetails(data.data);
+  };
 
   // fetch staff details data
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchStaffDetails();
+  }, []);
+
+  console.log(staffDetails);
 
   return (
     <Layout>
@@ -53,16 +66,16 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
             <div className="bg-white grid grid-cols-2 gap-10 p-4 rounded-lg shadow">
               <div className="flex items-center gap-2">
                 <Avatar>
-                  <AvatarImage src={staffDetails.avatar} />
-                  <AvatarFallback>AVT</AvatarFallback>
+                  <AvatarImage src={""} />
+                  <AvatarFallback>IMG</AvatarFallback>
                 </Avatar>
                 <span className="text-lg text-muted-foreground font-medium">
-                  {staffDetails.name}
+                  {staffDetails?.first_name}
                 </span>
               </div>
               <div className="space-y-1 text-muted-foreground font-medium text-sm">
-                <div>Phone: {staffDetails.phone}</div>
-                <div>Email: {staffDetails.email}</div>
+                <div>Phone: {staffDetails?.phone || "Not provided"}</div>
+                <div>Email: {staffDetails?.email || "Not provided"}</div>
               </div>
             </div>
           </div>
@@ -70,7 +83,14 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
           {/* Tabs content */}
           <div>
             <TabsContent value="general">
-              <StaffDetailsGeneral id={staffId} />
+              {staffDetails ? (
+                <StaffDetailsGeneral
+                  id={staffId}
+                  staffInformation={staffDetails}
+                />
+              ) : (
+                <div>Loading...</div>
+              )}
             </TabsContent>
             <TabsContent value="attendance">
               <StaffDetailsAttendance id={staffId} />
