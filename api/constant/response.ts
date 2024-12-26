@@ -1,31 +1,44 @@
-
 export type DepartmentResponse = {
-  "_id": string
-  "organization_id": string,
-  "name": string,
-  "size": number,
-}
+  _id: string;
+  organization_id: string;
+  name: string;
+  size: number;
+};
 export type PositionResponse = {
-  "_id": string,
-  "organization_id": string,
-  "name": string,
-  "description": string | null,
-}
+  _id: string;
+  organization_id: string;
+  name: string;
+  description: string | null;
+};
 export type StaffResponse = {
-  "_id": string,
-  "organization_id": string,
-  "first_name": string,
-  "last_name": string,
-  "gender": string,
-  "nationality": string,
-  "birthdate": Date | null,
-  "birthplace": string,
-  "place_of_residence": string,
-  "citizen_id": string,
-  "phone": string | null,
-  "email": string,
-  "date_of_contract": Date | null,
-  "contract_end_date": Date | null,
-  "department": DepartmentResponse | undefined,
-  "position": PositionResponse | undefined
-}
+  _id: string;
+  organization_id: string;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  nationality: string;
+  birthdate: Date | null;
+  birthplace: string;
+  place_of_residence: string;
+  citizen_id: string;
+  phone: string | null;
+  email: string;
+  date_of_contract: Date | null;
+  contract_end_date: Date | null;
+  department: DepartmentResponse | undefined;
+  position: PositionResponse | undefined;
+};
+
+export type RequestResponse = {
+  _id: string;
+  sender: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  details: {
+    day_off: string;
+    duration: number;
+    type: string;
+    proof: string | null;
+  };
+  createdAt: string;
+  updatedAt: string;
+};

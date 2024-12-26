@@ -8,6 +8,7 @@ import StaffDetailsGeneral from "@/components/management/Staff/StaffDetailsGener
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { LuArrowLeft } from "react-icons/lu";
@@ -23,20 +24,29 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
   //   email: "sampleEmail@gmail.com",
   //   avatar: "https://picsum.photos/200",
   // });
-  const [staffDetails, setStaffDetails] = useState<StaffResponse>();
+  // const [staffDetails, setStaffDetails] = useState<StaffResponse>();
 
-  const fetchStaffDetails = async () => {
-    // Fetch staff details data
-    const data = await StaffService.getStaffById(staffId);
-    setStaffDetails(data.data);
-  };
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["staff", staffId],
+    queryFn: async () => {
+      const response = await StaffService.getStaffById(staffId);
+      return response.data;
+    },
+  });
 
-  // fetch staff details data
-  useEffect(() => {
-    fetchStaffDetails();
-  }, []);
+  // const fetchStaffDetails = async () => {
+  //   // Fetch staff details data
+  //   const data = await StaffService.getStaffById(staffId);
+  //   setStaffDetails(data.data);
+  // };
 
-  console.log(staffDetails);
+  // // fetch staff details data
+  // useEffect(() => {
+  //   fetchStaffDetails();
+  // }, []);
+
+  console.log(data);
+  if (error) return <div>Error loading staff data</div>;
 
   return (
     <Layout>
@@ -70,12 +80,12 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
                   <AvatarFallback>IMG</AvatarFallback>
                 </Avatar>
                 <span className="text-lg text-muted-foreground font-medium">
-                  {staffDetails?.first_name}
+                  {data?.first_name}
                 </span>
               </div>
               <div className="space-y-1 text-muted-foreground font-medium text-sm">
-                <div>Phone: {staffDetails?.phone || "Not provided"}</div>
-                <div>Email: {staffDetails?.email || "Not provided"}</div>
+                <div>Phone: {data?.phone || "Not provided"}</div>
+                <div>Email: {data?.email || "Not provided"}</div>
               </div>
             </div>
           </div>
@@ -83,11 +93,8 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
           {/* Tabs content */}
           <div>
             <TabsContent value="general">
-              {staffDetails ? (
-                <StaffDetailsGeneral
-                  id={staffId}
-                  staffInformation={staffDetails}
-                />
+              {data ? (
+                <StaffDetailsGeneral id={staffId} staffInformation={data} />
               ) : (
                 <div>Loading...</div>
               )}

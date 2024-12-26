@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -8,7 +7,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import logo from "../../../public/logo.png";
+import { format } from "date-fns";
+import { RequestResponse } from "@/api/constant/response";
 
 const requests = [
   {
@@ -49,7 +49,48 @@ const requests = [
   },
 ];
 
-export function RequestsTable({ typeRequest }: { typeRequest: string }) {
+// {
+//   "_id": "676910ddb701e49855c42240",
+//   "organization_id": "6768e603acc8cf3dc2219395",
+//   "sender": "676900d84436a8f05ca92171",
+//   "status": "REJECTED",
+//   "details": {
+//       "day_off": "2024-12-27T07:24:45.972Z",
+//       "duration": 1,
+//       "type": "VACATION",
+//       "proof": null
+//   },
+//   "createdAt": "2024-12-23T07:27:25.412Z",
+//   "updatedAt": "2024-12-25T19:31:45.205Z",
+//   "__v": 0
+// }
+
+interface RequestTableProps {
+  dataList: RequestResponse[];
+  typeRequest: "Pending" | "Approved" | "Rejected";
+  onRowClick: (data: RequestResponse) => void;
+}
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "APPROVED":
+      return "bg-green-500 rounded-lg w-fit px-4 py-1 font-medium text-white";
+    case "REJECTED":
+      return "bg-red-500 rounded-lg w-fit px-4 py-1 font-medium text-white";
+    default:
+      return "bg-blue-500 rounded-lg w-fit px-4 py-1 font-medium text-white";
+  }
+};
+
+export function RequestsTable({
+  dataList,
+  typeRequest,
+  onRowClick,
+}: RequestTableProps) {
+  const filteredData = dataList?.filter(
+    (request) => request.status === typeRequest.toUpperCase()
+  );
+
   return (
     <div className="bg-white rounded-lg shadow px-6 py-3 flex flex-col justify-between">
       <p className=" text-center text-2xl font-bold py-3">
@@ -62,29 +103,28 @@ export function RequestsTable({ typeRequest }: { typeRequest: string }) {
             <TableHead>Staff</TableHead>
             <TableHead>Day off</TableHead>
             <TableHead>Duration</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {requests.map((request, index) => (
-            <TableRow key={index}>
+          {filteredData?.map((request) => (
+            <TableRow key={request._id} onClick={() => onRowClick(request)}>
               <TableCell className="text-gray-500">
-                {request.requestTime}
+                {format(new Date(request.createdAt), "PP")}
               </TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={logo}
-                    alt={request.staff.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                  <span>{request.staff.name}</span>
-                </div>
+                <div className="flex items-center gap-2">{request.sender}</div>
               </TableCell>
-              <TableCell className="text-gray-500">{request.dayOff}</TableCell>
               <TableCell className="text-gray-500">
-                {request.duration}
+                {format(new Date(request.details.day_off), "PP")}
+              </TableCell>
+              <TableCell className="text-gray-500">
+                {request.details.duration} day(s)
+              </TableCell>
+              <TableCell>
+                <div className={getStatusColor(request.status)}>
+                  {request.status}
+                </div>
               </TableCell>
             </TableRow>
           ))}
