@@ -15,14 +15,14 @@ const protectedRoutes = [
   '/statistics',
   '/personal'
 ]
-const publicRoutes = ['/login', '/signup', '/whoareyou', '/resetpassword']
+const publicRoutes = ['/', '/login', '/signup', '/whoareyou', '/resetpassword']
 
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
   // console.log(req.cookies)
   const path = req.nextUrl.pathname
   const isProtectedRoute = protectedRoutes.some((prefix) => path.startsWith(prefix))
-  const isPublicRoute = publicRoutes.some((prefix) => path.startsWith(prefix))
+  const isPublicRoute = publicRoutes.includes(path)
 
   // if (isPublicRoute) {
   //   return NextResponse.next()
@@ -43,7 +43,6 @@ export default async function middleware(req: NextRequest) {
     isPublicRoute &&
     token?.value
   ) {
-    console.log("EEE", token?.value)
     switch (role?.value) {
       case USER_ROLES.HR:
         return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
