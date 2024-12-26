@@ -104,20 +104,20 @@ const AppSidebar = () => {
   });
 
   return (
-    <Sidebar className="border-none">
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
+    <Sidebar className="border-none bg-white">
+      <SidebarHeader className="bg-white">
+        <div className="flex items-center gap-2 px-4 py-2 ">
           <Link href="/dashboard" className="text-xl font-semibold">
             <Image className="" src={logo} alt="Logo" height={32} />
           </Link>
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-4 mt-5">
+      <SidebarContent className="px-4 pt-5 bg-white">
         <NavMain items={navItems} />
       </SidebarContent>
 
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
@@ -126,7 +126,7 @@ const AppSidebar = () => {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   );
 };
