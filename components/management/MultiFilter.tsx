@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -10,27 +10,40 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { DepartmentResponse } from "@/api/constant/response";
+import { DepartmentService } from "@/api/DepartmentService";
 
-// interface Filters {
-//   search: string;
-//   sortBy: string;
-//   department: string;
-//   gender: string;
-// }
+const MultiFilter = ({
+  filters,
+  onFilterChange,
+}: {
+  filters: any;
+  onFilterChange: any;
+}) => {
+  const [department, setDepartment] = useState<[DepartmentResponse]>();
 
-const MultiFilter = () => {
-  const [filters, setFilters] = useState({
-    search: "",
-    sortBy: "name",
-    department: "",
-    gender: "",
-  });
-
-  const handleFilterChange = (key: string, value: string) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    console.log("filters", newFilters);
+  const getAllDepartment = async () => {
+    // Fetch all department data
+    const data = await DepartmentService.getAllDept();
+    setDepartment(data.data);
   };
+
+  useEffect(() => {
+    getAllDepartment();
+  }, []);
+
+  // const [filters, setFilters] = useState({
+  //   search: "",
+  //   sortBy: "name",
+  //   department: "",
+  //   gender: "",
+  // });
+
+  // const handleFilterChange = (key: string, value: string) => {
+  //   const newFilters = { ...filters, [key]: value };
+  //   setFilters(newFilters);
+  //   console.log("filters", newFilters);
+  // };
 
   return (
     <div className="bg-white px-6 py-3 rounded-lg shadow">
@@ -41,15 +54,15 @@ const MultiFilter = () => {
             className="pl-9 w-[300px]"
             placeholder="Search..."
             type="search"
-            onChange={(e) => handleFilterChange("search", e.target.value)}
+            onChange={(e) => onFilterChange("search", e.target.value)}
           />
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-500">Sort by:</span>
+          {/* <span className="text-sm text-gray-500">Sort by:</span>
           <Select
             defaultValue={filters.sortBy}
-            onValueChange={(value) => handleFilterChange("sortBy", value)}
+            onValueChange={(value) => onFilterChange("sortBy", value)}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select" />
@@ -59,31 +72,40 @@ const MultiFilter = () => {
               <SelectItem value="department">Department</SelectItem>
               <SelectItem value="position">Position</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
 
           <Select
-            defaultValue={filters.department}
-            onValueChange={(value) => handleFilterChange("department", value)}
+            defaultValue={filters.department || "all"}
+            onValueChange={(value) =>
+              onFilterChange("department", value === "all" ? "" : value)
+            }
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="hr">Human Resources</SelectItem>
-              <SelectItem value="it">IT</SelectItem>
-              <SelectItem value="marketing">Marketing</SelectItem>
-              <SelectItem value="sales">Sales</SelectItem>
+              <SelectItem key="all" value="all">
+                All Departments
+              </SelectItem>
+              {department?.map((dept) => (
+                <SelectItem key={dept._id} value={dept._id}>
+                  {dept.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
           <Select
-            defaultValue={filters.gender}
-            onValueChange={(value) => handleFilterChange("gender", value)}
+            defaultValue={filters.gender || "all"}
+            onValueChange={(value) =>
+              onFilterChange("gender", value === "all" ? "" : value)
+            }
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Gender" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="all">All Gender</SelectItem>
               <SelectItem value="male">Male</SelectItem>
               <SelectItem value="female">Female</SelectItem>
             </SelectContent>

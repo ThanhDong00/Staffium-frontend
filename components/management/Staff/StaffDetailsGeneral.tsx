@@ -1,5 +1,6 @@
 "use client";
 
+import { StaffResponse } from "@/api/constant/response";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,98 +14,42 @@ import {
 import { Pencil, Save } from "lucide-react";
 import React, { useState } from "react";
 
-interface StaffData {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  nationality: string;
-  birthdate: string;
-  birthplace: string;
-  placeOfResidence: string;
-  citizenID: string;
-  phoneNumber: string;
-  email: string;
-  // Work
-  position: string;
-  department: string;
-  dateOfContract: string;
-  contractEndDate: string;
-}
-
 interface EditState {
-  firstName: boolean;
-  lastName: boolean;
-  gender: boolean;
-  nationality: boolean;
-  birthdate: boolean;
-  birthplace: boolean;
-  placeOfResidence: boolean;
-  citizenID: boolean;
-  phoneNumber: boolean;
-  email: boolean;
-  position: boolean;
-  department: boolean;
-  dateOfContract: boolean;
-  contractEndDate: boolean;
+  [key: string]: boolean;
 }
 
-const StaffDetailsGeneral = ({ id }: { id: string }) => {
+const StaffDetailsGeneral = ({
+  id,
+  staffInformation,
+}: {
+  id: string;
+  staffInformation: StaffResponse;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState<EditState>({
-    firstName: false,
-    lastName: false,
+    first_name: false,
+    last_name: false,
     gender: false,
     nationality: false,
     birthdate: false,
     birthplace: false,
-    placeOfResidence: false,
-    citizenID: false,
-    phoneNumber: false,
+    place_of_residence: false,
+    citizen_id: false,
+    phone: false,
     email: false,
     // Work
     position: false,
     department: false,
-    dateOfContract: false,
-    contractEndDate: false,
+    date_of_contract: false,
+    contract_end_date: false,
   });
 
-  const [staffGeneralData, setStaffGeneralData] = useState<StaffData>({
-    firstName: "Smith",
-    lastName: "Jone",
-    gender: "Female",
-    nationality: "Viet Nam",
-    birthdate: "20/10/2000",
-    birthplace: "Ben Tre, Viet Nam",
-    placeOfResidence: "Trường Đại học Công nghệ Thông tin",
-    citizenID: "000000000000",
-    phoneNumber: "0123456789",
-    email: "staffium@gmail.com",
-    // Work
-    position: "Developer",
-    department: "IT",
-    dateOfContract: "20/10/2020",
-    contractEndDate: "20/10/2029",
-  });
+  const [staffGeneralData, setStaffGeneralData] =
+    useState<StaffResponse>(staffInformation);
 
-  const [tempData, setTempData] = useState<StaffData>({
-    firstName: staffGeneralData.firstName,
-    lastName: staffGeneralData.lastName,
-    gender: staffGeneralData.gender,
-    nationality: staffGeneralData.nationality,
-    birthdate: staffGeneralData.birthdate,
-    birthplace: staffGeneralData.birthplace,
-    placeOfResidence: staffGeneralData.placeOfResidence,
-    citizenID: staffGeneralData.citizenID,
-    phoneNumber: staffGeneralData.phoneNumber,
-    email: staffGeneralData.email,
-    // Work
-    position: staffGeneralData.position,
-    department: staffGeneralData.department,
-    dateOfContract: staffGeneralData.dateOfContract,
-    contractEndDate: staffGeneralData.contractEndDate,
-  });
+  const [tempData, setTempData] = useState<StaffResponse>(staffInformation);
 
-  const validateField = (field: keyof StaffData, value: string): boolean => {
+  const validateField = (field: keyof StaffResponse, value: any): boolean => {
     if (!value.trim()) {
       alert(`${field} cannot be empty`);
       return false;
@@ -112,14 +57,14 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
     return true;
   };
 
-  const handleInputChange = (field: keyof StaffData, value: string) => {
+  const handleInputChange = (field: keyof StaffResponse, value: string) => {
     setTempData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleSave = async (field: keyof EditState) => {
+  const handleSave = async (field: keyof StaffResponse) => {
     try {
       setIsLoading(true);
 
@@ -153,7 +98,7 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
     }
   };
 
-  const handleToggleEdit = (field: keyof EditState) => {
+  const handleToggleEdit = (field: keyof StaffResponse) => {
     if (isEdit[field]) {
       handleSave(field);
     } else {
@@ -164,13 +109,19 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
     }
   };
 
-  const renderInputField = (field: keyof StaffData, label: string) => (
+  const renderInputField = (field: keyof StaffResponse, label: string) => (
     <div>
       <Label htmlFor={field}>{label}</Label>
       <div className="flex gap-2">
         <Input
           id={field}
-          value={tempData[field]}
+          value={
+            field === "position"
+              ? (tempData[field] as any)?.name || ""
+              : field === "department"
+              ? (tempData[field] as any)?.name || ""
+              : tempData[field]?.toString() || ""
+          }
           onChange={(e) => handleInputChange(field, e.target.value)}
           disabled={!isEdit[field] || isLoading}
           className={isEdit[field] ? "border-blue-400" : ""}
@@ -198,8 +149,8 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
           Personal
         </div>
         <div className="grid grid-cols-2 gap-4 mt-5">
-          {renderInputField("firstName", "First Name")}
-          {renderInputField("lastName", "Last Name")}
+          {renderInputField("first_name", "First Name")}
+          {renderInputField("last_name", "Last Name")}
           {/* {renderInputField("gender", "gender")} */}
           <div>
             <Label htmlFor="gender">Gender</Label>
@@ -215,11 +166,11 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
                   <SelectValue placeholder={`Select Gender`} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem key="male" value="Male">
+                  <SelectItem key="male" value="male">
                     Male
                   </SelectItem>
 
-                  <SelectItem key="female" value="Female">
+                  <SelectItem key="female" value="female">
                     Female
                   </SelectItem>
                 </SelectContent>
@@ -241,9 +192,9 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
           {renderInputField("nationality", "Nationality")}
           {renderInputField("birthdate", "Birthdate")}
           {renderInputField("birthplace", "Birthplace")}
-          {renderInputField("placeOfResidence", "Place of Residence")}
-          {renderInputField("citizenID", "Citizen ID")}
-          {renderInputField("phoneNumber", "Phone Number")}
+          {renderInputField("place_of_residence", "Place of Residence")}
+          {renderInputField("citizen_id", "Citizen ID")}
+          {renderInputField("phone", "Phone Number")}
           {renderInputField("email", "Email")}
         </div>
       </div>
@@ -255,8 +206,8 @@ const StaffDetailsGeneral = ({ id }: { id: string }) => {
         <div className="grid grid-cols-2 gap-4 mt-5">
           {renderInputField("position", "Position")}
           {renderInputField("department", "Department")}
-          {renderInputField("dateOfContract", "Date of Contract")}
-          {renderInputField("contractEndDate", "Contract End Date")}
+          {renderInputField("date_of_contract", "Date of Contract")}
+          {renderInputField("contract_end_date", "Contract End Date")}
         </div>
       </div>
     </div>
