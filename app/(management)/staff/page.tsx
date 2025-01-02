@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ITEM_PER_PAGE = 10;
 
@@ -31,7 +32,7 @@ const Staff = () => {
   });
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["staff", currentPage, filters],
+    queryKey: ["staffs", currentPage, filters],
     queryFn: async () => {
       const response = await StaffService.getAllStaff(
         currentPage,
@@ -63,59 +64,60 @@ const Staff = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="p-5 flex flex-col gap-4">
-          <MultiFilter filters={filters} onFilterChange={handleFilterChange} />
+      <div className="p-5 flex flex-col gap-4">
+        <MultiFilter filters={filters} onFilterChange={handleFilterChange} />
 
-          <div className="h-[calc(100vh-275px)] overflow-y-auto border bg-white rounded-lg shadow">
-            <StaffTable onRowClick={handleTableClick} dataList={data?.items} />
-          </div>
-
-          <div className="flex justify-end mt-4">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() =>
-                      currentPage > 1 && handlePageChange(currentPage - 1)
-                    }
-                    className={
-                      currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                    }
-                  />
-                </PaginationItem>
-
-                {[...Array(pageSize)].map((_, index) => (
-                  <PaginationItem key={index + 1}>
-                    <PaginationLink
-                      onClick={() => handlePageChange(index + 1)}
-                      isActive={currentPage === index + 1}
-                    >
-                      {index + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() =>
-                      currentPage < pageSize &&
-                      handlePageChange(currentPage + 1)
-                    }
-                    className={
-                      currentPage === pageSize
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
+        <div className="h-[calc(100vh-275px)] overflow-y-auto border bg-white rounded-lg shadow">
+          {isLoading ?
+            <div className="w-full h-full flex flex-col gap-4 p-5">
+              {Array.from({ length: 10 }).map((_, index) => <Skeleton className="w-full h-10" />)}
+            </div>
+            :
+            <StaffTable onRowClick={handleTableClick} dataList={data?.items} />}
         </div>
-      )}
+
+        <div className="flex justify-end mt-4">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    currentPage > 1 && handlePageChange(currentPage - 1)
+                  }
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
+
+              {[...Array(pageSize)].map((_, index) => (
+                <PaginationItem key={index + 1}>
+                  <PaginationLink
+                    onClick={() => handlePageChange(index + 1)}
+                    isActive={currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    currentPage < pageSize &&
+                    handlePageChange(currentPage + 1)
+                  }
+                  className={
+                    currentPage === pageSize
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      </div>
     </>
   );
 };

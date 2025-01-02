@@ -38,10 +38,9 @@ export const AuthService = {
         Authorization: `Bearer ${LoginSession.get()}`
       }
     }
-
     )
       .then(async (res) => {
-        LoginSession.clear()
+        await LoginSession.clear()
         return res.data
       })
       .catch(error => error.response.data)

@@ -83,4 +83,16 @@ export const StaffService = {
         return error.response.data;
       });
   },
+  updateOneStaffById: async (id: string, payload: Object): Promise<any> => {
+    return await axios
+      .put(`${STAFF_URL}/${id}`, payload, {
+        headers: {
+          Authorization: `Bearer ${LoginSession.get()}`,
+        },
+      })
+      .then((res) => res.data)
+      .catch((error) => {
+        return error.response.data;
+      });
+  },
 };

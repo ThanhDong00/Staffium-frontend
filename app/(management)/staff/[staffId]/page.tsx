@@ -29,7 +29,7 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
   if (error) return <div>Error loading staff data</div>;
 
   return (
-    <Layout>
+    <>
       <div className="p-5 space-y-5">
         {/* <Tabs defaultValue="general" className="space-y-6"> */}
         {/* Header in staff */}
@@ -52,9 +52,6 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
               </TabsTrigger>
             </TabsList> */}
 
-          <div className="text-2xl font-semibold bg-white  rounded px-4 py-2">
-            General
-          </div>
 
           {/* Staff header infor */}
           <div className="bg-white grid grid-cols-2 gap-10 p-4 rounded-lg shadow">
@@ -64,7 +61,7 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
                 <AvatarFallback>IMG</AvatarFallback>
               </Avatar>
               <span className="text-lg text-muted-foreground font-medium">
-                {data?.first_name}
+                {data?.first_name + ' ' + data?.last_name || "Not provided"}
               </span>
             </div>
             <div className="space-y-1 text-muted-foreground font-medium text-sm">
@@ -74,25 +71,11 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
           </div>
         </div>
 
-        {/* Tabs content */}
-        {/* <div>
-            <TabsContent value="general">
-              {data ? (
-                <StaffDetailsGeneral id={staffId} staffInformation={data} />
-              ) : (
-                <div>Loading...</div>
-              )}
-            </TabsContent>
-            <TabsContent value="attendance">
-              <StaffDetailsAttendance id={staffId} />
-            </TabsContent>
-          </div> */}
         {data ? (
           <StaffDetailsGeneral id={staffId} staffInformation={data} />
         ) : (
           <div>Loading...</div>
         )}
-        {/* </Tabs> */}
       </div>
     </>
   );

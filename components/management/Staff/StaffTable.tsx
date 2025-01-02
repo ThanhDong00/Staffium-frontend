@@ -95,7 +95,6 @@ const StaffTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Gender</TableHead>
             <TableHead>Department</TableHead>
@@ -109,17 +108,15 @@ const StaffTable = ({
               onClick={() => onRowClick(person._id)}
               className=" hover:cursor-pointer"
             >
-              <TableCell>{person._id}</TableCell>
               <TableCell>
                 {person.first_name} {person.last_name}
               </TableCell>
               <TableCell>
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                    person.gender === "female"
-                      ? "bg-pink-100 text-pink-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-sm font-semibold ${person.gender === "Female"
+                    ? "bg-pink-100 text-pink-600"
+                    : "bg-blue-100 text-blue-600"
+                    }`}
                 >
                   {person.gender}
                 </span>

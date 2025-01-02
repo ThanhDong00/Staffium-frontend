@@ -113,16 +113,15 @@ const AttendanceTable = ({ dataList }: { dataList: any[] }) => {
               <TableCell>{`${item.staff.first_name} ${item.staff.last_name}`}</TableCell>
               <TableCell className="capitalize">
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                    item.staff.gender === "Female"
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${item.staff.gender === "Female"
                       ? "bg-pink-100 text-pink-700"
                       : "bg-blue-100 text-blue-700"
-                  }`}
+                    }`}
                 >
                   {item.staff.gender}
                 </span>
               </TableCell>
-              <TableCell>{item.staff.department.name}</TableCell>
+              <TableCell>{item.staff.department?.name}</TableCell>
               <TableCell>
                 {item.check_in
                   ? format(new Date(item.check_in), "hh:mm a")
