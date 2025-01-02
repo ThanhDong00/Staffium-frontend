@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 
+import { ATTENDANCE_TYPES } from "@/constants/enum";
+
 const attendance = [
   {
     id: "ID0001",
@@ -91,7 +93,33 @@ const attendance = [
 //   }
 // }
 
-const AttendanceTable = ({ dataList }: { dataList: any[] }) => {
+const AttendanceTable = ({
+  dataList,
+  typeAttendance,
+}: {
+  dataList: any[];
+  typeAttendance: any;
+}) => {
+  const filterData = dataList?.filter((item: any) => {
+    if (typeAttendance === "All") return true;
+
+    switch (typeAttendance) {
+      case "Work":
+        return item.type === ATTENDANCE_TYPES.WORK;
+      case "Late":
+        return item.type === ATTENDANCE_TYPES.LATE;
+      case "Early":
+        return item.type === ATTENDANCE_TYPES.EARLY;
+      case "Off":
+        return (
+          item.type === ATTENDANCE_TYPES.OFF_AUTHORIZED ||
+          item.type === ATTENDANCE_TYPES.OFF_UNAUTHORIZED
+        );
+      default:
+        return false;
+    }
+  });
+
   return (
     <div className="px-6 py-3 flex flex-col justify-between">
       <p className=" text-center text-2xl font-bold py-3">Attendance</p>
@@ -107,16 +135,17 @@ const AttendanceTable = ({ dataList }: { dataList: any[] }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {dataList?.map((item) => (
+          {filterData?.map((item) => (
             <TableRow key={item._id}>
               <TableCell>{item.staff._id}</TableCell>
               <TableCell>{`${item.staff.first_name} ${item.staff.last_name}`}</TableCell>
               <TableCell className="capitalize">
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${item.staff.gender === "Female"
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
+                    item.staff.gender === "Female"
                       ? "bg-pink-100 text-pink-700"
                       : "bg-blue-100 text-blue-700"
-                    }`}
+                  }`}
                 >
                   {item.staff.gender}
                 </span>

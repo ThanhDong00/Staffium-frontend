@@ -20,14 +20,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const filter = ["All", "Check in", "Check out", "Late", "Off", "OT"];
-
 const ITEM_PER_PAGE = 10;
 
 interface Totals {
   totalCheckin: number;
   totalCheckout: number;
 }
+
+const filter = ["All", "Work", "Late", "Early", "Off"];
 
 const Attendance = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +37,7 @@ const Attendance = () => {
     department: "",
     gender: "",
   });
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["attendance", currentPage, filters],
     queryFn: async () => {
@@ -60,8 +61,11 @@ const Attendance = () => {
     console.log(filters);
   };
 
-  const [selected, setSelected] = useState("All");
-  const handleSelectFilterClick = (label: string) => {
+  const [selected, setSelected] = useState<"All" | "Work" | "Late" | "Off">(
+    "All"
+  );
+
+  const handleSelectFilterClick = (label: any) => {
     setSelected(label);
   };
 
@@ -130,7 +134,7 @@ const Attendance = () => {
       </div>
 
       <div className="mt-5 h-[calc(100vh-275px)] overflow-y-auto border bg-white rounded-lg shadow">
-        <AttendanceTable dataList={data?.items} />
+        <AttendanceTable dataList={data?.items} typeAttendance={selected} />
       </div>
 
       <div className="flex justify-end mt-4">
