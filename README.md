@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Staffium: Employee Management System  
 
-## Getting Started
+![License](https://img.shields.io/badge/license-MIT-blue.svg)  
+![Technologies](https://img.shields.io/badge/Technologies-Next.js%20|%20Express.js%20|%20MongoDB-green)  
 
-First, run the development server:
+Staffium is a web-based employee management system designed to streamline HR processes. The application focuses on essential features like employee information management, time tracking, and leave request handling, offering a simple yet efficient solution for businesses.  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Employee Management**: Create, update, delete, and view employee details.  
+- **Attendance Tracking**: Record check-in and check-out times, view attendance logs, and export attendance reports.  
+- **Leave Requests**: Employees can submit leave requests with reasons and attachments; HR can approve or reject requests.  
+- **Dashboard**: Overview of key metrics and statistics for HR managers.  
+- **User Roles**: Support for multiple user roles (HR and Employees) with tailored functionalities.  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend  
+- **Framework**: [Next.js](https://nextjs.org/)  
+- **Language**: TypeScript  
+- **UI Library**: Shadcn (based on Tailwind CSS)  
+- **Styling**: Tailwind CSS  
 
-## Learn More
+### Backend  
+- **Framework**: [Express.js](https://expressjs.com/)  
+- **Language**: TypeScript  
+- **Database Middleware**: Mongoose (for MongoDB)  
+- **Authentication**: Passport.js  
 
-To learn more about Next.js, take a look at the following resources:
+### Database  
+- **Database**: MongoDB  
+- **Hosting**: MongoDB Atlas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Installation  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites  
+Ensure you have the following installed:  
+- Node.js (v16 or later)  
+- MongoDB
 
-## Deploy on Vercel
+### Steps  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Clone the repository**:  
+   ```bash
+   git clone https://github.com/ThanhDong00/Staffium-frontend.git
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Install dependencies**
+   ```bash
+   npm install
+3. **Run the application:**
+   ```bash
+   npm run dev
+
+ 4. **Access the application**
+    Navigate to http://localhost:3000 in your browser.
+    
