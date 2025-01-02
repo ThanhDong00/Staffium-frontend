@@ -1,6 +1,7 @@
 'use client'
 import { DepartmentService } from "@/api/DepartmentService";
 import { OrgService } from "@/api/OrgService";
+import Spinner from "@/components/Feedback/Spinner";
 import Layout from "@/components/Layout";
 import CreateDeptPopover from "@/components/management/Organization/CreateDeptPopover";
 import DepartmentList from "@/components/management/Organization/DepartmentList";
@@ -28,16 +29,30 @@ export default function OrganizationLayout({
     queryFn: () => OrgService.getInvitation(),
   })
 
+  const orgInfoQuery = useQuery({
+    queryKey: ['org_info'],
+    queryFn: () => OrgService.getInfo()
+  })
+
   useEffect(() => {
     if (invitationQuery.data)
       setInvitation(invitationQuery.data.data.code)
   }, [invitationQuery])
   return (
     <div className="p-5 flex flex-col gap-5 h-full">
-      <div className="flex justify-between items-center rounded-lg bg-white p-5 shadow">
+      <div className="flex justify-start gap-8 items-center rounded-lg bg-white p-5 shadow h-16">
         <div className="flex items-center gap-4">
           <Building2 size={24} className="text-primary" />
           <p className="font-semibold">Organization</p>
+        </div>
+        <div className="flex gap-4 items-center pl-4 border-0 border-slate-300 border-l-2">
+          <p className="text-slate-500 font-normal">Name:</p>
+          {
+            orgInfoQuery.isPending ?
+              <div><Spinner /></div>
+              :
+              <p className="text-lg font-bold text-primary">{orgInfoQuery.data.data.name}</p>
+          }
         </div>
       </div>
       <div className="grow grid grid-cols-12 gap-4 ">

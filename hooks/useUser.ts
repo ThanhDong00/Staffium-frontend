@@ -23,7 +23,15 @@ const getDisplayName = () => {
   return localStorage.getItem('userDisplayname')
 }
 
+const setOrg = (org_id: string) => {
+  return localStorage.setItem('userOrg', org_id)
+}
+
+const getOrg = () => localStorage.getItem('userOrg')
+
+const reset = () => localStorage.clear()
+
 
 export const useUser = () => {
-  return { saveAvatar, getAvatar, setDisplayName, getDisplayName }
+  return { saveAvatar, getAvatar, setDisplayName, getDisplayName, setOrg, getOrg, reset }
 }

@@ -58,6 +58,10 @@ const Login = () => {
     onSuccess: (res) => {
       if (res.status === 200) {
         userHook.setDisplayName(res.data.display_name)
+        if (res.data.organization_id) {
+          userHook.setOrg(res.data.organization_id._id)
+        }
+
         if (res.data.avatar)
           avatarMutation.mutate(res.data.avatar)
       }
@@ -74,6 +78,20 @@ const Login = () => {
           title: "Sign in successful!",
         });
 
+        //
+        userMutation.mutate()
+
+        //
+        switch (LoginSession.role()) {
+          case USER_ROLES.HR:
+            router.replace("/dashboard");
+            break;
+          case USER_ROLES.STAFF:
+            router.replace("/personal/info");
+            break;
+          default:
+            break;
+        }
       } else {
         toast({
           variant: "destructive",
@@ -83,20 +101,7 @@ const Login = () => {
         return
       }
 
-      //
-      userMutation.mutate()
 
-      //
-      switch (LoginSession.role()) {
-        case USER_ROLES.HR:
-          router.replace("/dashboard");
-          break;
-        case USER_ROLES.STAFF:
-          router.replace("/personal");
-          break;
-        default:
-          break;
-      }
     },
     onError: (error) => console.error(error),
   });
@@ -104,6 +109,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
+    triggerProgress()
     loginMutation.mutate({
       username: loginData.email,
       password: loginData.password,
@@ -111,7 +117,12 @@ const Login = () => {
   };
   return (
     <>
-      <Progress value={(loginMutation.isPending || userMutation.isPending || avatarMutation.isPending) && progress} className="w-full fixed top-0 z-50" />
+      {(loginMutation.isPending || userMutation.isPending) &&
+        <Progress
+          value={progress}
+          className="w-full fixed top-0 z-50" />
+      }
+
       <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative">
         <div className="absolute top-8 left-16 z-10">
           <div className="flex gap-2 items-center">

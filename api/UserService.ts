@@ -6,8 +6,8 @@ import LoginSession from '@/app/cookie'
 const USER_URL = `${BASE_URL}/user`
 
 export const UserService = {
-  joinOrg: async (org_id: string): Promise<any> => {
-    return await axios.get(`${USER_URL}/join/${org_id}`,
+  joinOrg: async (code: string): Promise<any> => {
+    return await axios.get(`${USER_URL}/join/${code}`,
       {
         headers: {
           Authorization: `Bearer ${LoginSession.get()}`,

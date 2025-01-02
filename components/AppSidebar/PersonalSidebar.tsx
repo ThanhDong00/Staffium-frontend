@@ -19,6 +19,7 @@ import {
   LuUserPlus,
   LuUsers,
   LuBuilding2,
+  LuFile
 } from "react-icons/lu";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,54 +32,24 @@ import { AuthService } from "@/api/AuthService";
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LuLayoutGrid,
-    },
-    {
-      title: "Organization",
-      url: "/organization",
-      icon: LuBuilding2,
-    },
-    {
-      title: "Staff",
-      url: "/staff",
-      icon: LuUsers,
-    },
-    {
       title: "Attendance",
-      url: "/attendance",
-      icon: LuClock,
-    },
-    {
-      title: "Requests",
-      url: "/requests",
+      url: "/personal/attendance",
       icon: LuFileCheck,
     },
     {
-      title: "Statistics",
-      url: "/statistics",
-      icon: LuBarChart3,
-      items: [
-        {
-          title: "Attendance",
-          url: "/statistics/attendance",
-        },
-        {
-          title: "Requests",
-          url: "/statistics/requests",
-        },
-      ],
+      title: "Infomation",
+      url: "/personal/info",
+      icon: LuFile,
     },
     {
-      title: "Configurations",
-      url: "/configurations",
-      icon: LuWrench,
+      title: "Requests",
+      url: "/personal/request",
+      icon: LuFileCheck,
     },
   ],
 };
 
-const AppSidebar = ({ trigger }: { trigger: Function }) => {
+export default function PersonalSidebar({ trigger }: { trigger: Function }) {
   const pathname = usePathname();
 
   // const isActiveRoute = (url: string) => pathname === url;
@@ -89,19 +60,11 @@ const AppSidebar = ({ trigger }: { trigger: Function }) => {
   };
 
   const navItems = data.navMain.map((item) => {
-    // Map sub-items with isActive property
-    const mappedSubItems = item.items?.map((subItem) => ({
-      ...subItem,
-      isActive: isActiveRoute(subItem.url),
-    }));
 
     // Return item with updated sub-items and main isActive state
     return {
       ...item,
-      items: mappedSubItems,
-      isActive:
-        isActiveRoute(item.url) ||
-        mappedSubItems?.some((subItem) => subItem.isActive),
+      isActive: isActiveRoute(item.url),
     };
   });
   const router = useRouter();
@@ -138,4 +101,4 @@ const AppSidebar = ({ trigger }: { trigger: Function }) => {
   );
 };
 
-export default AppSidebar;
+

@@ -9,7 +9,7 @@ const ORG_URL = `${BASE_URL}/org-config`;
 export const OrgConfigService = {
   getConfig: async (): Promise<any> => {
     return await axios
-      .get(`${ORG_URL}`, {
+      .get(`${ORG_URL}/`, {
         headers: {
           Authorization: `Bearer ${LoginSession.get()}`,
         },
@@ -20,7 +20,7 @@ export const OrgConfigService = {
       });
   },
 
-  createNewOrg: async (id: string, payload: any): Promise<any> => {
+  updateConfig: async (id: string, payload: Object): Promise<any> => {
     return await axios
       .put(`${ORG_URL}/${id}`, payload, {
         headers: {

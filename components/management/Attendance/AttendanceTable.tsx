@@ -126,7 +126,6 @@ const AttendanceTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Gender</TableHead>
             <TableHead>Department</TableHead>
@@ -137,15 +136,13 @@ const AttendanceTable = ({
         <TableBody>
           {filterData?.map((item) => (
             <TableRow key={item._id}>
-              <TableCell>{item.staff._id}</TableCell>
               <TableCell>{`${item.staff.first_name} ${item.staff.last_name}`}</TableCell>
               <TableCell className="capitalize">
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                    item.staff.gender === "Female"
-                      ? "bg-pink-100 text-pink-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}
+                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${item.staff.gender === "Female"
+                    ? "bg-pink-100 text-pink-700"
+                    : "bg-blue-100 text-blue-700"
+                    }`}
                 >
                   {item.staff.gender}
                 </span>

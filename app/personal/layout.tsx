@@ -1,33 +1,31 @@
 'use client'
-import React, { Suspense, useEffect, useState } from 'react'
-import Layout from "@/components/Layout";
+import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from "../provider";
+import PersonalLayout from '@/components/PersonalLayout';
 import { Progress } from '@/components/ui/progress';
 import { useUser } from '@/hooks/useUser';
-import { Input } from '@/components/ui/input';
-import Image from "next/image";
-import logo from "../../public/Logo-full.png";
-import { Button } from '@/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
-import { OrgService } from '@/api/OrgService';
 import { UserService } from '@/api/UserService';
 import { toast } from '@/hooks/use-toast';
-import Spinner from '@/components/Feedback/Spinner';
+import Image from 'next/image';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import logo from "../../public/Logo-full.png";
 
-// const user = {
-//   name: 'Khair'
-// }
-export default function ManagamentLayout({
+export default function PLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { progress, triggerProgress } = useGlobalContext();
   const [isTrigger, setIsTrigger] = useState<boolean>(false)
+
   const handleTrigger = (state: boolean) => {
     setIsTrigger(state)
     setTimeout(() => triggerProgress(), 500)
   }
+
+
   const [code, setCode] = useState<string>('')
   const userHook = useUser()
 
@@ -69,14 +67,14 @@ export default function ManagamentLayout({
       })
     }
   })
+
   return (
     <>
       {isTrigger && <Progress value={progress} className="w-full fixed top-0 z-50" />}
-      {/* <div><Spinner /></div> */}
       {(userHook.getOrg() !== null && userHook.getOrg() !== undefined) ?
-        <Layout trigger={handleTrigger}>
+        <PersonalLayout trigger={handleTrigger}>
           {children}
-        </Layout>
+        </PersonalLayout>
         :
         <div className='w-full h-screen flex flex-col gap-4 justify-center items-center'>
           <Image className="fixed top-12" src={logo} alt="Logo" height={32} />
@@ -93,7 +91,6 @@ export default function ManagamentLayout({
           </div>
         </div>
       }
-
 
     </>
 

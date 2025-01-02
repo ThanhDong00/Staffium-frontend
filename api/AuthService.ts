@@ -41,6 +41,7 @@ export const AuthService = {
     )
       .then(async (res) => {
         await LoginSession.clear()
+        localStorage.clear()
         return res.data
       })
       .catch(error => error.response.data)

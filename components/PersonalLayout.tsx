@@ -3,16 +3,17 @@ import SideBar from "@/components/management/Sidebar";
 import AppSidebar from "./AppSidebar/AppSidebar";
 import Header from "@/components/management/Header";
 import { SidebarProvider } from "./ui/sidebar";
+import PersonalSidebar from "./AppSidebar/PersonalSidebar";
 
 interface LayoutProps {
   children: React.ReactNode;
   trigger: Function
 }
-const Layout: React.FC<LayoutProps> = ({ children, trigger }) => {
+const PersonalLayout: React.FC<LayoutProps> = ({ children, trigger }) => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex flex-1">
-        <AppSidebar trigger={trigger} />
+        <PersonalSidebar trigger={trigger} />
         <div className="flex flex-col flex-1">
           <Header />
           <main className="grow bg-slate-100 rounded-md">
@@ -24,4 +25,4 @@ const Layout: React.FC<LayoutProps> = ({ children, trigger }) => {
   );
 };
 
-export default Layout;
+export default PersonalLayout;

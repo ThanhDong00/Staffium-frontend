@@ -7,12 +7,17 @@ import logo from "../../public/logo.png";
 import { LuBell, LuSettings } from "react-icons/lu";
 import { formatDateTime } from "../../utils/formatDateTime";
 import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
+import LoginSession from "@/app/cookie";
+import { USER_ROLES } from "@/constants/enum";
 
 const Header = () => {
   const [currentDateTime, setCurrentDateTime] = useState(
     formatDateTime(new Date())
   );
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -24,9 +29,28 @@ const Header = () => {
 
   const user = useUser()
   const router = useRouter()
+  const path = usePathname()
+
+
 
   return (
     <header className="py-4 px-8 flex items-center justify-end my-auto">
+      {LoginSession.role() === USER_ROLES.HR &&
+        <div className="flex flex-row gap-4 justify-center items-center">
+          <Button
+            className="rounded-3xl"
+            onClick={() => {
+              if (!path.startsWith('/personal'))
+                router.push('/personal/info')
+              else
+                router.push('/dashboard')
+            }}
+          >
+            {!path.startsWith('/personal') ? 'Personal' : 'Managament'}
+          </Button>
+          <Label>Switch to {!path.startsWith('/personal') ? 'Personal' : 'Managament'} mode</Label>
+        </div>
+      }
       <span className="text-sm text-muted-foreground font-semibold px-4">
         {currentDateTime}
       </span>

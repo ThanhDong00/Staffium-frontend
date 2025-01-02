@@ -94,7 +94,7 @@ export function RequestsTable({
   return (
     <div className="bg-white rounded-lg shadow px-6 py-3 flex flex-col justify-between">
       <p className=" text-center text-2xl font-bold py-3">
-        {typeRequest} Waiting list
+        {typeRequest} list
       </p>
       <Table>
         <TableHeader>

@@ -7,7 +7,7 @@ const ATTENDANCE_URL = `${BASE_URL}/attendance`
 
 export const AttendanceService = {
   checkin: async (): Promise<any> => {
-    return await axios.post(`${ATTENDANCE_URL}/checkin`,
+    return await axios.post(`${ATTENDANCE_URL}/checkin`, null,
       {
         headers: {
           Authorization: `Bearer ${LoginSession.get()}`,
@@ -18,7 +18,7 @@ export const AttendanceService = {
       .catch(error => error.response.data)
   },
   checkout: async (): Promise<any> => {
-    return await axios.post(`${ATTENDANCE_URL}/checkout`,
+    return await axios.post(`${ATTENDANCE_URL}/checkout`, null,
       {
         headers: {
           Authorization: `Bearer ${LoginSession.get()}`,
@@ -57,5 +57,15 @@ export const AttendanceService = {
       .then(res => res.data)
       .catch(error => error.response.data)
   },
-
+  getMyTodayAttendance: async (): Promise<any> => {
+    return await axios.get(`${ATTENDANCE_URL}/my/today`,
+      {
+        headers: {
+          Authorization: `Bearer ${LoginSession.get()}`,
+        }
+      }
+    )
+      .then(res => res.data)
+      .catch(error => error.response.data)
+  }
 }

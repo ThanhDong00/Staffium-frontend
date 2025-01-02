@@ -17,7 +17,20 @@ const protectedRoutes = [
   '/personal',
   '/account'
 ]
+const hrRoutes = [
+  '/attendance',
+  '/configurations',
+  '/dashboard',
+  '/organization',
+  '/requests',
+  '/staff',
+  '/statistics',
+  '/account'
+]
 const publicRoutes = ['/', '/login', '/signup', '/whoareyou', '/resetpassword']
+const unenoughRoutes = [
+  '/personal'
+]
 
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
@@ -25,6 +38,7 @@ export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
   const isProtectedRoute = protectedRoutes.some((prefix) => path.startsWith(prefix))
   const isPublicRoute = publicRoutes.includes(path)
+  const isHRRoute = hrRoutes.some((prefix) => path.startsWith(prefix))
 
   const search = req.nextUrl.search.slice(1).split('=')
   if (search[0] === 'user' && search[1] === 'invalid') {
@@ -43,6 +57,14 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
 
+    if (path === '/account' && role?.value === USER_ROLES.STAFF) {
+      return NextResponse.redirect(new URL('/personal/account', req.nextUrl))
+    }
+
+    if (isHRRoute && role?.value !== USER_ROLES.HR) {
+      return NextResponse.redirect(new URL('/personal/info', req.nextUrl))
+    }
+
     if (
       isPublicRoute &&
       token?.value
@@ -51,7 +73,7 @@ export default async function middleware(req: NextRequest) {
         case USER_ROLES.HR:
           return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
         case USER_ROLES.STAFF:
-          return NextResponse.redirect(new URL('/personal', req.nextUrl))
+          return NextResponse.redirect(new URL('/personal/info', req.nextUrl))
         default:
           return NextResponse.next()
       }

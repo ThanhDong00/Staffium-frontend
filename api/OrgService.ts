@@ -35,4 +35,16 @@ export const OrgService = {
         return error.response.data
       })
   },
+
+  getInfo: async (): Promise<any> => {
+    return await axios.get(`${ORG_URL}/info`,
+      {
+        headers: {
+          Authorization: `Bearer ${LoginSession.get()}`,
+        }
+      }
+    )
+      .then(res => res.data)
+      .catch(error => error.response.data)
+  }
 }
