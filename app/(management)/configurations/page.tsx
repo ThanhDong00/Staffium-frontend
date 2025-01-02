@@ -3,9 +3,8 @@ import Layout from "@/components/Layout";
 
 const Configurations = () => {
   return (
-    <Layout>
-      <div>Configurations</div>
-    </Layout>
+    <div>Configurations</div>
+
   );
 };
 

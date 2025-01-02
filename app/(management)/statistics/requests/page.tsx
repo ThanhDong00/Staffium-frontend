@@ -8,7 +8,7 @@ import React from "react";
 
 const StatisticsRequests = () => {
   return (
-    <Layout>
+    <>
       <div className="p-5">
         <div className="flex justify-between items-center rounded-lg bg-white p-5 shadow">
           <div className="flex items-center gap-4">
@@ -39,7 +39,7 @@ const StatisticsRequests = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

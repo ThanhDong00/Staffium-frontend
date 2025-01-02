@@ -62,7 +62,7 @@ const Staff = () => {
   if (error) return <div>Error loading staff data</div>;
 
   return (
-    <Layout>
+    <>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -116,7 +116,7 @@ const Staff = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   );
 };
 

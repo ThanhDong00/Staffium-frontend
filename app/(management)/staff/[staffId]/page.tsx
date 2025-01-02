@@ -49,7 +49,7 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
   if (error) return <div>Error loading staff data</div>;
 
   return (
-    <Layout>
+    <>
       <div className="p-5">
         <Tabs defaultValue="general" className="space-y-6">
           {/* Header in staff */}
@@ -105,7 +105,7 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
           </div>
         </Tabs>
       </div>
-    </Layout>
+    </>
   );
 };
 

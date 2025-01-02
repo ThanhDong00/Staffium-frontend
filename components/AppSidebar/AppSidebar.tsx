@@ -24,7 +24,9 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../public/Logo-full.png";
 import NavMain from "./NavMain";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Icon, LogOutIcon } from "lucide-react";
+import { AuthService } from "@/api/AuthService";
 
 const data = {
   navMain: [
@@ -102,6 +104,7 @@ const AppSidebar = () => {
         mappedSubItems?.some((subItem) => subItem.isActive),
     };
   });
+  const router = useRouter();
 
   return (
     <Sidebar className="border-none bg-white">
@@ -117,16 +120,19 @@ const AppSidebar = () => {
         <NavMain items={navItems} />
       </SidebarContent>
 
-      {/* <SidebarFooter>
+      <SidebarFooter className="mb-4">
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <LuUserPlus className="h-4 w-4" />
-              <span>Invite</span>
+          <SidebarMenuItem >
+            <SidebarMenuButton className="h-10" onClick={() => {
+              AuthService.logout()
+              router.replace('/login')
+            }}>
+              <LogOutIcon />
+              <span>Log out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter> */}
+      </SidebarFooter>
     </Sidebar>
   );
 };

@@ -32,4 +32,35 @@ export const UserService = {
         return error.response.data
       })
   },
+  changeDisplayName: async (name: string): Promise<any> => {
+    return await axios.put(`${USER_URL}/name`,
+      { name: name },
+      {
+        headers: {
+          Authorization: `Bearer ${LoginSession.get()}`,
+        }
+      }
+    )
+      .then(res => res.data)
+      .catch(error => {
+        return error.response.data
+      })
+  },
+  changeAvatar: async (file: File): Promise<any> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    return await axios.put(`${USER_URL}/avatar`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${LoginSession.get()}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      }
+    )
+      .then(res => res.data)
+      .catch(error => {
+        return error.response.data
+      })
+  },
 }
