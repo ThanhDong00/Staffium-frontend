@@ -132,7 +132,7 @@ const Requests = () => {
   console.log(data);
 
   return (
-    <Layout>
+    <div>
       <div className="p-5">
         <div className="flex justify-between items-center rounded-lg bg-white px-6 py-3 shadow">
           <div className="flex items-center gap-4">
@@ -271,7 +271,7 @@ const Requests = () => {
           </DialogContent>
         )}
       </Dialog>
-    </Layout>
+    </div>
   );
 };
 

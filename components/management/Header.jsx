@@ -6,6 +6,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import logo from "../../public/logo.png";
 import { LuBell, LuSettings } from "react-icons/lu";
 import { formatDateTime } from "../../utils/formatDateTime";
+import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [currentDateTime, setCurrentDateTime] = useState(
@@ -20,6 +22,9 @@ const Header = () => {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
+  const user = useUser()
+  const router = useRouter()
+
   return (
     <header className="py-4 px-8 flex items-center justify-end my-auto">
       <span className="text-sm text-muted-foreground font-semibold px-4">
@@ -33,13 +38,17 @@ const Header = () => {
         <Button variant="ghost" size="icon" className="text-muted-foreground">
           <LuSettings className="h-4 w-4" />
         </Button>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-slate-100 hover:cursor-pointer"
+          onClick={() => {
+            router.push("/account")
+          }}
+        >
           <Avatar>
-            <AvatarImage src={logo} />
+            <AvatarImage src={user.getAvatar()} />
             <AvatarFallback>KK</AvatarFallback>
           </Avatar>
           <span className="text-sm text-muted-foreground font-medium">
-            Khải Khải
+            {user.getDisplayName()}
           </span>
         </div>
       </div>

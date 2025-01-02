@@ -32,18 +32,20 @@ export const AuthService = {
 
   },
 
-  logout: async (): Promise<any> => {
-    return await axios.post(`${AUTH_URL}/logout`,
-      {
-        headers: {
-          Authorization: `Bearer ${LoginSession.get()}`,
-        }
-      })
-      .then(res => {
+  logout: async () => {
+    return await axios.post(`${AUTH_URL}/logout`, null, {
+      headers: {
+        Authorization: `Bearer ${LoginSession.get()}`
+      }
+    }
+
+    )
+      .then(async (res) => {
         LoginSession.clear()
         return res.data
       })
       .catch(error => error.response.data)
+
   },
 
   check: async (): Promise<any> => {

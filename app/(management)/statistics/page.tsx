@@ -8,7 +8,7 @@ import NumberWidget from "@/components/management/NumberWidget";
 
 const Statistics = () => {
   return (
-    <Layout>
+    <>
       <div className="p-5">
         <Tabs defaultValue="attendance" className="space-y-6">
           <TabsList className="bg-white">
@@ -50,7 +50,7 @@ const Statistics = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </Layout>
+    </>
   );
 };
 

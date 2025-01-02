@@ -94,7 +94,7 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
         )}
         {/* </Tabs> */}
       </div>
-    </Layout>
+    </>
   );
 };
 

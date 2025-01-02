@@ -10,7 +10,7 @@ import TimeFilter from "@/components/management/Statistics/TimeFilter";
 
 const StatisticAttendance = () => {
   return (
-    <Layout>
+    <>
       <div className="p-5">
         <div className="flex justify-between items-center rounded-lg bg-white p-5 shadow">
           <div className="flex items-center gap-4">
@@ -41,7 +41,7 @@ const StatisticAttendance = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

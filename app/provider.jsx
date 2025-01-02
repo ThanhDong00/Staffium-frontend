@@ -15,6 +15,7 @@ export default function GlobalProvider({ children }) {
     return () => clearTimeout(timer)
   }
 
+
   return (
     <GlobalContext.Provider
       value={{ progress, triggerProgress }}
