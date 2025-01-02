@@ -1,9 +1,23 @@
+'use client'
+import { DepartmentService } from "@/api/DepartmentService";
 import Layout from "@/components/Layout";
+import DepartmentList from "@/components/management/Organization/DepartmentList";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
 import { Building2, CopyIcon } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 
 const Organization = () => {
+
+  const deptQuery = useQuery({
+    queryKey: ['depts'],
+    queryFn: () => DepartmentService.getAllDept(),
+  })
+  // const invitationQuery = useQuery({
+  //   queryKey: ['invitation'],
+  //   queryFn: () => Org
+  // })
   return (
     <div className="p-5">
       <div className="flex justify-between items-center rounded-lg bg-white p-5 shadow">
@@ -15,12 +29,15 @@ const Organization = () => {
       <div className="mt-5 grid grid-cols-12 gap-4 h-[calc(100vh-200px)]">
         <div className="flex flex-col rounded-lg bg-white shadow p-5 col-span-9 overflow-y-auto relative [&::-webkit-scrollbar]:hidden">
           <div className="">
-            <div className="text-lg text-gray-600 py-2 border-b-2 border-gray-300">
-              HR
+            <div className="text-lg text-gray-800 py-2 border-b-2 border-gray-300">
+              Department
             </div>
-            <div>
+            {deptQuery.isPending ?
+              <Skeleton className="h-[125px] w-[250px] rounded-xl"></Skeleton>
+              :
+              <DepartmentList deptList={deptQuery.data.data} />
 
-            </div>
+            }
           </div>
         </div>
 

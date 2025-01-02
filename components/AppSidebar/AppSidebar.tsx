@@ -123,8 +123,8 @@ const AppSidebar = () => {
       <SidebarFooter className="mb-4">
         <SidebarMenu>
           <SidebarMenuItem >
-            <SidebarMenuButton className="h-10" onClick={() => {
-              AuthService.logout()
+            <SidebarMenuButton className="h-10" onClick={async () => {
+              await AuthService.logout()
               router.replace('/login')
             }}>
               <LogOutIcon />
