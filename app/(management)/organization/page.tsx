@@ -1,9 +1,11 @@
 'use client'
 import { DepartmentService } from "@/api/DepartmentService";
+import { OrgService } from "@/api/OrgService";
 import Layout from "@/components/Layout";
 import DepartmentList from "@/components/management/Organization/DepartmentList";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { Building2, CopyIcon } from "lucide-react";
 import React, { Suspense } from "react";
@@ -14,10 +16,10 @@ const Organization = () => {
     queryKey: ['depts'],
     queryFn: () => DepartmentService.getAllDept(),
   })
-  // const invitationQuery = useQuery({
-  //   queryKey: ['invitation'],
-  //   queryFn: () => Org
-  // })
+  const invitationQuery = useQuery({
+    queryKey: ['invitation'],
+    queryFn: () => OrgService.getInvitation(),
+  })
   return (
     <div className="p-5">
       <div className="flex justify-between items-center rounded-lg bg-white p-5 shadow">
@@ -46,9 +48,18 @@ const Organization = () => {
             Invitation code
           </div>
           <div className="flex flex-row justify-center p-5 rounded-xl bg-slate-100 text-primary text-xl tracking-widest font-bold">
-            be45je
+            {invitationQuery.isPending ? 'Loading' : invitationQuery.data.data.code}
           </div>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            onClick={() => {
+              navigator.clipboard.writeText(invitationQuery.data?.data.code)
+              toast({
+                variant: "default",
+                title: "Copied to clipboard",
+              });
+            }}
+          >
             <CopyIcon />
             Copy
           </Button>
