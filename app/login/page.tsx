@@ -1,6 +1,6 @@
 "use client";
 
-import React, { HTMLInputTypeAttribute, useState } from "react";
+import React, { HTMLInputTypeAttribute, useEffect, useState } from "react";
 import Image from "next/image";
 import sideBackground from "../../public/dreamlike-surrealistic-landscape 1.png";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import { SignInForm } from "@/api/constant/request";
 import { AuthService } from "@/api/AuthService";
 import LoginSession from "@/app/cookie";
 import { USER_ROLES } from "@/constants/enum";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalContext } from "../provider";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +25,16 @@ const Login = () => {
   const { progress, triggerProgress } = useGlobalContext();
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams()
+  const search = searchParams.get('user')
   const userHook = useUser()
+
+  useEffect(() => {
+    if (search === 'invalid') {
+      LoginSession.clear()
+      router.replace('/login')
+    }
+  }, [])
 
   const [loginData, setLoginData] = useState({
     email: "",

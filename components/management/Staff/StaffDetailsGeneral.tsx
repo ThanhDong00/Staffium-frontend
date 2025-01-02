@@ -2,6 +2,7 @@
 
 import { StaffResponse } from "@/api/constant/response";
 import { DepartmentService } from "@/api/DepartmentService";
+import { PositionService } from "@/api/PositionService";
 import { StaffService } from "@/api/StaffService";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
 import Spinner from "@/components/Feedback/Spinner";
@@ -61,6 +62,10 @@ const StaffDetailsGeneral = ({
     queryKey: ['depts'],
     queryFn: () => DepartmentService.getAllDept(),
   })
+  const posQuery = useQuery({
+    queryKey: ['positions'],
+    queryFn: () => PositionService.getAllPos(),
+  })
   const queryClient = useQueryClient()
 
   const updateStaffMutation = useMutation({
@@ -70,6 +75,7 @@ const StaffDetailsGeneral = ({
         variant: 'default',
         title: `Updated successfully`
       })
+      // setTempData()
       queryClient.invalidateQueries({
         queryKey: ['staffs', 1, {
           search: "",
@@ -160,13 +166,7 @@ const StaffDetailsGeneral = ({
       <div className="flex gap-2">
         <Input
           id={field}
-          value={
-            field === "position"
-              ? (tempData[field] as any)?.name || ""
-              : field === "department"
-                ? (tempData[field] as any)?.name || ""
-                : tempData[field]?.toString() || ""
-          }
+          value={tempData[field]?.toString() || ""}
           onChange={(e) => handleInputChange(field, e.target.value)}
           disabled={!isEdit[field] || isLoading}
           className={isEdit[field] ? "border-blue-400" : ""}
@@ -243,37 +243,6 @@ const StaffDetailsGeneral = ({
                 <SelectItem key="female" value="Female" >
                   Female
                 </SelectItem>])}
-              {/* <div>
-                <Label htmlFor="gender">Gender</Label>
-                <div className="flex gap-2">
-                  <Select
-                    disabled={!isEdit["gender"] || isLoading}
-                    value={tempData["gender"]}
-                    onValueChange={(value) => handleInputChange("gender", value)}
-                  >
-                    <SelectTrigger
-                      className={isEdit["gender"] ? "border-indigo-400" : ""}
-                    >
-                      <SelectValue placeholder={`Select Gender`} />
-                    </SelectTrigger>
-                    <SelectContent >
-
-                    </SelectContent>
-                  </Select>
-                  <Button
-                    size="icon"
-                    variant={isEdit.gender ? "default" : "ghost"}
-                    onClick={() => handleToggleEdit("gender")}
-                    disabled={isLoading}
-                  >
-                    {isEdit.gender ? (
-                      <Save className="h-4 w-4" />
-                    ) : (
-                      <Pencil className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </div> */}
               {
                 nationalityQuery.isPending ?
                   <div className="flex justify-center"><Spinner /></div>
@@ -324,16 +293,83 @@ const StaffDetailsGeneral = ({
               Work
             </div>
             <div className="grid grid-cols-2 gap-4 mt-5">
-              {renderInputField("position", "Position")}
+              {posQuery.isPending ? <div className="flex justify-center"><Spinner /></div> :
+                <div>
+                  <Label htmlFor="position">Position</Label>
+                  <div className="flex gap-2">
+                    <Select
+                      disabled={!isEdit["position"] || isLoading}
+                      value={tempData["position"]?._id}
+                      onValueChange={(value) => { handleInputChange("position", value); console.log(value) }}
+                    >
+                      <SelectTrigger
+                        className={isEdit["position"] ? "border-indigo-400" : ""}
+                      >
+                        <SelectValue placeholder={`Select position`} />
+                      </SelectTrigger>
+                      <SelectContent >
+                        {posQuery.data.data.map((i: any, index: any) => (
+                          <SelectItem key={i._id} value={i._id} >
+                            {i.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      size="icon"
+                      variant={isEdit["position"] ? "default" : "ghost"}
+                      onClick={() => handleToggleEdit("position")}
+                      disabled={isLoading}
+                    >
+                      {isEdit["position"] ? (
+                        <Save className="h-4 w-4" />
+                      ) : (
+                        <Pencil className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+              }
+
               {deptQuery.isPending ? <div className="flex justify-center"><Spinner /></div>
                 :
-                renderSelectField("department", "Department",
-                  deptQuery.data.data.map((i: any, index: any) => (
-                    <SelectItem key={index} value={i._id} >
-                      {i.name}
-                    </SelectItem>
-                  ))
-                )
+                <div>
+                  <Label htmlFor="department">Department</Label>
+                  <div className="flex gap-2">
+                    <Select
+                      disabled={!isEdit["department"] || isLoading}
+                      value={tempData["department"]?._id as any}
+                      onValueChange={(value) => handleInputChange("department", value)}
+                    >
+                      <SelectTrigger
+                        className={isEdit["department"] ? "border-indigo-400" : ""}
+                      >
+                        <SelectValue placeholder={`Select Department`} />
+                      </SelectTrigger>
+                      <SelectContent >
+                        {deptQuery.data.data.map((i: any, index: any) => (
+                          <SelectItem key={index} value={i._id} >
+                            {i.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      size="icon"
+                      variant={isEdit["department"] ? "default" : "ghost"}
+                      onClick={() => handleToggleEdit("department")}
+                      disabled={isLoading}
+                    >
+                      {isEdit["department"] ? (
+                        <Save className="h-4 w-4" />
+                      ) : (
+                        <Pencil className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
               }
 
               <div>

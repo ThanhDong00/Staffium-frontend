@@ -1,18 +1,18 @@
-import { DepartmentResponse } from '@/api/constant/response'
+import { PositionResponse } from '@/api/constant/response'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { set } from 'date-fns'
 import { EditIcon, SaveIcon, TrashIcon } from 'lucide-react'
 import React from 'react'
 
-interface DepartmentListProps {
-  deptList: DepartmentResponse[],
+interface PositionListProps {
+  posList: PositionResponse[],
   updateFn: Function,
   deleteFn: Function
 }
-export default function DepartmentList({ deptList, updateFn, deleteFn }: DepartmentListProps) {
-  const DepartmentCard = ({ dept }: { dept: DepartmentResponse }) => {
-    const [editedName, setEditedName] = React.useState(dept.name)
+export default function PositionList({ posList, updateFn, deleteFn }: PositionListProps) {
+  const PositionCard = ({ pos }: { pos: PositionResponse }) => {
+    const [editedName, setEditedName] = React.useState(pos.name)
     const [isEdit, setIsEdit] = React.useState(false)
     const field = (name: string, value: string) => (
       <div className='flex flex-col gap-2 '>
@@ -30,8 +30,7 @@ export default function DepartmentList({ deptList, updateFn, deleteFn }: Departm
           />
           :
           <div className='grid grid-cols-2 grow'>
-            {field('Name', dept.name)}
-            {field('Size', dept.size.toString())}
+            {field('Name', pos.name)}
           </div>}
         <div className='flex flex-col gap-2'>
           <Button
@@ -39,7 +38,7 @@ export default function DepartmentList({ deptList, updateFn, deleteFn }: Departm
             variant={isEdit ? 'default' : 'outline'}
             onClick={() => {
               if (isEdit) {
-                updateFn({ id: dept._id, name: editedName })
+                updateFn({ id: pos._id, name: editedName })
               }
               setIsEdit(!isEdit)
             }}
@@ -51,7 +50,7 @@ export default function DepartmentList({ deptList, updateFn, deleteFn }: Departm
           <Button
             className='w-16'
             variant='destructive'
-            onClick={() => deleteFn(dept._id)}
+            onClick={() => deleteFn(pos._id)}
           >
             <TrashIcon />
           </Button>
@@ -61,8 +60,8 @@ export default function DepartmentList({ deptList, updateFn, deleteFn }: Departm
   }
   return (
     <div className='flex flex-col gap-2 py-2'>
-      {deptList.map((dept) => (
-        <DepartmentCard dept={dept} key={dept._id} />
+      {posList.map((pos) => (
+        <PositionCard pos={pos} key={pos._id} />
       ))}
     </div>
   )

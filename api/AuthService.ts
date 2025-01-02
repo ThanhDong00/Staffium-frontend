@@ -47,11 +47,11 @@ export const AuthService = {
 
   },
 
-  check: async (): Promise<any> => {
+  check: async (token: string): Promise<any> => {
     return await axios.get(`${AUTH_URL}/check`,
       {
         headers: {
-          Authorization: `Bearer ${LoginSession.get()}`,
+          Authorization: `Bearer ${token}`,
         }
       })
       .then((res) => res.data)
