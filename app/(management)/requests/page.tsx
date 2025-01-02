@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import { CheckCheck, FileQuestion, LogOut, Timer } from "lucide-react";
 import SelectedFilter from "@/components/management/SelectedFilter";
 import { RequestsTable } from "@/components/management/Requests/RequestTable";
 import NumberWidget from "@/components/management/NumberWidget";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { RequestService } from "@/api/RequestService";
 import { RequestResponse } from "@/api/constant/response";
 import {
@@ -18,6 +18,10 @@ import {
 } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { StaffService } from "@/api/StaffService";
+import { Progress } from "@/components/ui/progress";
+import { useGlobalContext } from "../../provider";
+import { useToast } from "@/hooks/use-toast";
 
 const filter = ["Pending", "Approved", "Rejected"];
 
@@ -28,16 +32,33 @@ interface RequestTotals {
 }
 
 const Requests = () => {
+  const { toast } = useToast();
+
+  const { progress, triggerProgress } = useGlobalContext();
+
+  const queryClient = useQueryClient();
+
   const [selected, setSelected] = useState<"Pending" | "Approved" | "Rejected">(
     "Pending"
   );
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["requests"],
     queryFn: async () => {
       const response = await RequestService.getAllThisMonthRequest();
-      return response.data;
+      const requestsWithStaff = await Promise.all(
+        response.data.map(async (request: RequestResponse) => {
+          const staffResponse = await StaffService.getStaffById(request.sender);
+          return {
+            ...request,
+            staffDetails: staffResponse.data,
+          };
+        })
+      );
+      return requestsWithStaff;
     },
   });
+
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRequest, setSelectedRequest] =
     useState<RequestResponse | null>();
@@ -76,6 +97,40 @@ const Requests = () => {
     }
   };
 
+  const rejectMutation = useMutation({
+    mutationFn: (id: string) => RequestService.reject(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+      setOpenDialog(false);
+      toast({
+        title: "Request rejected successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to reject request",
+      });
+    },
+  });
+
+  const approveMutation = useMutation({
+    mutationFn: (id: string) => RequestService.approve(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+      setOpenDialog(false);
+      toast({
+        title: "Request approved successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to approved request",
+      });
+    },
+  });
+
+  console.log(data);
+
   return (
     <Layout>
       <div className="p-5">
@@ -95,37 +150,48 @@ const Requests = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-6 gap-4 mt-5 bg-white rounded-lg px-6 py-3 shadow">
-          <NumberWidget
-            title="Pending"
-            Icon={CheckCheck}
-            value={totals.pending}
-          />
+        {isLoading ? (
+          // <p>Loading...</p>
+          <Progress value={progress} className="w-[100%] mt-5" />
+        ) : (
+          <>
+            <div className="grid grid-cols-6 gap-4 mt-5 bg-white rounded-lg px-6 py-3 shadow">
+              <NumberWidget
+                title="Pending"
+                Icon={CheckCheck}
+                value={totals.pending.toString()}
+              />
 
-          <NumberWidget
-            title="Approved"
-            Icon={LogOut}
-            value={totals.approved}
-          />
+              <NumberWidget
+                title="Approved"
+                Icon={LogOut}
+                value={totals.approved.toString()}
+              />
 
-          <NumberWidget title="Rejected" Icon={Timer} value={totals.rejected} />
-        </div>
+              <NumberWidget
+                title="Rejected"
+                Icon={Timer}
+                value={totals.rejected.toString()}
+              />
+            </div>
 
-        <div className="mt-5">
-          <SelectedFilter
-            datas={filter}
-            valueSelected={selected}
-            handleClick={handleSelectFilterClick}
-          />
-        </div>
+            <div className="mt-5">
+              <SelectedFilter
+                datas={filter}
+                valueSelected={selected}
+                handleClick={handleSelectFilterClick}
+              />
+            </div>
 
-        <div className="mt-5">
-          <RequestsTable
-            typeRequest={selected}
-            dataList={data}
-            onRowClick={handleTableRowClick}
-          />
-        </div>
+            <div className="mt-5">
+              <RequestsTable
+                typeRequest={selected}
+                dataList={data}
+                onRowClick={handleTableRowClick}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
@@ -149,7 +215,10 @@ const Requests = () => {
               </div>
               <div className="grid grid-cols-2 items-center gap-4">
                 <span className="text-sm text-muted-foreground">Staff</span>
-                <span>{selectedRequest.sender}</span>
+                <span>
+                  {selectedRequest.staffDetails.first_name}{" "}
+                  {selectedRequest.staffDetails.last_name}
+                </span>
               </div>
               <div className="grid grid-cols-2 items-center gap-4">
                 <span className="text-sm text-muted-foreground">Day off</span>
@@ -179,13 +248,22 @@ const Requests = () => {
             <div className="flex justify-end gap-2">
               <Button
                 variant="destructive"
-                disabled={selectedRequest.status === "REJECTED"}
+                disabled={
+                  selectedRequest.status === "REJECTED" ||
+                  rejectMutation.isPending
+                }
+                onClick={() => rejectMutation.mutate(selectedRequest._id)}
+                className="disabled:opacity-50"
               >
                 Reject
               </Button>
               <Button
-                className="bg-green-500 hover:opacity-90 hover:bg-green-500"
-                disabled={selectedRequest.status === "APPROVED"}
+                className="bg-green-500 hover:opacity-90 hover:bg-green-500 disabled:opacity-50"
+                disabled={
+                  selectedRequest.status === "APPROVED" ||
+                  approveMutation.isPending
+                }
+                onClick={() => approveMutation.mutate(selectedRequest._id)}
               >
                 Approve
               </Button>

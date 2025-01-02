@@ -66,7 +66,7 @@ const requests = [
 // }
 
 interface RequestTableProps {
-  dataList: RequestResponse[];
+  dataList: any;
   typeRequest: "Pending" | "Approved" | "Rejected";
   onRowClick: (data: RequestResponse) => void;
 }
@@ -88,7 +88,7 @@ export function RequestsTable({
   onRowClick,
 }: RequestTableProps) {
   const filteredData = dataList?.filter(
-    (request) => request.status === typeRequest.toUpperCase()
+    (request: any) => request.status === typeRequest.toUpperCase()
   );
 
   return (
@@ -107,13 +107,20 @@ export function RequestsTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredData?.map((request) => (
-            <TableRow key={request._id} onClick={() => onRowClick(request)}>
+          {filteredData?.map((request: any) => (
+            <TableRow
+              key={request._id}
+              onClick={() => onRowClick(request)}
+              className="hover:cursor-pointer"
+            >
               <TableCell className="text-gray-500">
                 {format(new Date(request.createdAt), "PP")}
               </TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">{request.sender}</div>
+                <div className="flex items-center gap-2">
+                  {request.staffDetails.first_name}{" "}
+                  {request.staffDetails.last_name}
+                </div>
               </TableCell>
               <TableCell className="text-gray-500">
                 {format(new Date(request.details.day_off), "PP")}
@@ -121,7 +128,7 @@ export function RequestsTable({
               <TableCell className="text-gray-500">
                 {request.details.duration} day(s)
               </TableCell>
-              <TableCell>
+              <TableCell className="w-[200px]">
                 <div className={getStatusColor(request.status)}>
                   {request.status}
                 </div>

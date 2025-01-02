@@ -17,15 +17,6 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
   const staffId = params.staffId;
   const router = useRouter();
 
-  // const [staffDetails, setStaffDetails] = useState({
-  //   id: "",
-  //   name: "Khải Khải",
-  //   phone: "0123456789",
-  //   email: "sampleEmail@gmail.com",
-  //   avatar: "https://picsum.photos/200",
-  // });
-  // const [staffDetails, setStaffDetails] = useState<StaffResponse>();
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["staff", staffId],
     queryFn: async () => {
@@ -34,64 +25,57 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
     },
   });
 
-  // const fetchStaffDetails = async () => {
-  //   // Fetch staff details data
-  //   const data = await StaffService.getStaffById(staffId);
-  //   setStaffDetails(data.data);
-  // };
-
-  // // fetch staff details data
-  // useEffect(() => {
-  //   fetchStaffDetails();
-  // }, []);
-
   console.log(data);
   if (error) return <div>Error loading staff data</div>;
 
   return (
     <Layout>
-      <div className="p-5">
-        <Tabs defaultValue="general" className="space-y-6">
-          {/* Header in staff */}
-          <div className="flex w-full justify-between items-center">
-            {/* Button back to staff */}
-            <Button
-              className="bg-white text-forground hover:bg-muted-foreground hover:text-white"
-              onClick={() => router.push("/staff")}
-            >
-              <LuArrowLeft className="w-4 h-4" />
-            </Button>
+      <div className="p-5 space-y-5">
+        {/* <Tabs defaultValue="general" className="space-y-6"> */}
+        {/* Header in staff */}
+        <div className="flex w-full justify-between items-center">
+          {/* Button back to staff */}
+          <Button
+            className="bg-white text-forground hover:bg-muted-foreground hover:text-white"
+            onClick={() => router.push("/staff")}
+          >
+            <LuArrowLeft className="w-4 h-4" />
+          </Button>
 
-            {/* Tabs trigger */}
-            <TabsList className="bg-white h-12">
+          {/* Tabs trigger */}
+          {/* <TabsList className="bg-white h-12">
               <TabsTrigger value="general" className="p-2">
                 General
               </TabsTrigger>
               <TabsTrigger value="attendance" className="p-2">
                 Attendance
               </TabsTrigger>
-            </TabsList>
+            </TabsList> */}
 
-            {/* Staff header infor */}
-            <div className="bg-white grid grid-cols-2 gap-10 p-4 rounded-lg shadow">
-              <div className="flex items-center gap-2">
-                <Avatar>
-                  <AvatarImage src={""} />
-                  <AvatarFallback>IMG</AvatarFallback>
-                </Avatar>
-                <span className="text-lg text-muted-foreground font-medium">
-                  {data?.first_name}
-                </span>
-              </div>
-              <div className="space-y-1 text-muted-foreground font-medium text-sm">
-                <div>Phone: {data?.phone || "Not provided"}</div>
-                <div>Email: {data?.email || "Not provided"}</div>
-              </div>
-            </div>
+          <div className="text-2xl font-semibold bg-white  rounded px-4 py-2">
+            General
           </div>
 
-          {/* Tabs content */}
-          <div>
+          {/* Staff header infor */}
+          <div className="bg-white grid grid-cols-2 gap-10 p-4 rounded-lg shadow">
+            <div className="flex items-center gap-2">
+              <Avatar>
+                <AvatarImage src={""} />
+                <AvatarFallback>IMG</AvatarFallback>
+              </Avatar>
+              <span className="text-lg text-muted-foreground font-medium">
+                {data?.first_name}
+              </span>
+            </div>
+            <div className="space-y-1 text-muted-foreground font-medium text-sm">
+              <div>Phone: {data?.phone || "Not provided"}</div>
+              <div>Email: {data?.email || "Not provided"}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs content */}
+        {/* <div>
             <TabsContent value="general">
               {data ? (
                 <StaffDetailsGeneral id={staffId} staffInformation={data} />
@@ -102,8 +86,13 @@ const StaffDetails = ({ params }: { params: { staffId: string } }) => {
             <TabsContent value="attendance">
               <StaffDetailsAttendance id={staffId} />
             </TabsContent>
-          </div>
-        </Tabs>
+          </div> */}
+        {data ? (
+          <StaffDetailsGeneral id={staffId} staffInformation={data} />
+        ) : (
+          <div>Loading...</div>
+        )}
+        {/* </Tabs> */}
       </div>
     </Layout>
   );

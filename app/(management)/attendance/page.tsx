@@ -113,9 +113,9 @@ const Attendance = () => {
             value={totals?.totalCheckout ?? 0}
           />
 
-          <NumberWidget title="Late" Icon={Timer} value="123" />
+          {/* <NumberWidget title="Late" Icon={Timer} value="123" />
 
-          <NumberWidget title="Off" Icon={CalendarX2} value="123" />
+          <NumberWidget title="Off" Icon={CalendarX2} value="123" /> */}
         </div>
 
         <div className="mt-5">

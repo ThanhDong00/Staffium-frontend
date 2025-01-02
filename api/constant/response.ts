@@ -39,6 +39,7 @@ export type RequestResponse = {
     type: string;
     proof: string | null;
   };
+  staffDetails: StaffResponse;
   createdAt: string;
   updatedAt: string;
 };

@@ -104,7 +104,11 @@ const StaffTable = ({
         </TableHeader>
         <TableBody>
           {dataList?.map((person: any) => (
-            <TableRow key={person._id} onClick={() => onRowClick(person._id)}>
+            <TableRow
+              key={person._id}
+              onClick={() => onRowClick(person._id)}
+              className=" hover:cursor-pointer"
+            >
               <TableCell>{person._id}</TableCell>
               <TableCell>
                 {person.first_name} {person.last_name}
